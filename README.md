@@ -2,6 +2,8 @@
 
 ## Install docker
 
-1. Installera docker på datorn
-2. run ```docker build -t nextjs-docker```
-3. run ```docker run -p 3000:3000 nextjs-docker```
+1. Installera docker desktop på datorn
+2. Starta docker desktop
+3. gå in till visual-map repository via kommandotolken.
+4. kör ```docker build -t nextjs-docker .```
+5. kör ```docker run -p 3000:3000 nextjs-docker```
