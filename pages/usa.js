@@ -20,7 +20,7 @@ export default function TestPage() {
                 </div>
             </div>
 
-            <D3Example width="200" height="200" />
+            <Chart width="975" height="610" />
         </div>
     )
 }
