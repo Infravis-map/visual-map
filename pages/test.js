@@ -1,4 +1,5 @@
 import D3Example from '../components/D3Example'
+import Chart from '../components/Chart'
 import Project from '../components/Project'
 
 export default function TestPage() {
@@ -19,7 +20,7 @@ export default function TestPage() {
                 </div>
             </div>
 
-            <D3Example width="200" height="200" />
+            <Chart width="975" height="610" />
         </div>
     )
 }
