@@ -1,50 +1,25 @@
-import { useEffect, createRef } from "react";
+import { useEffect, useState, useRef, createRef } from "react";
 import * as d3 from "d3";
+import * as topojson from "topojson-client";
+// import { FileAttachment } from "d3-fetch";
+
+import us from "../files/states-albers-10m.json";
 
 export default function Chart({ width, height }) {
-  // const width = 975;
-  // const height = 610;
-
   const ref = createRef();
 
+
   useEffect(() => {
-    draw();
-  });
+      console.log('us', us)
+      draw();
+  }, [us]);
 
   const draw = () => {
-    const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
-
-    const svg = d3
-      .create("svg")
-      .attr("viewBox", [0, 0, width, height])
-      .attr("width", width)
-      .attr("height", height)
-      .attr("style", "max-width: 100%; height: auto;")
-      .on("click", reset);
-
-    const path = d3.geoPath();
-
-    const g = svg.append("g");
-
-    const states = g
-      .append("g")
-      .attr("fill", "#444")
-      .attr("cursor", "pointer")
-      .selectAll("path")
-      .data(topojson.feature(us, us.objects.states).features)
-      .join("path")
-      .on("click", clicked)
-      .attr("d", path);
-
-    states.append("title").text((d) => d.properties.name);
-
-    g.append("path")
-      .attr("fill", "none")
-      .attr("stroke", "white")
-      .attr("stroke-linejoin", "round")
-      .attr("d", path(topojson.mesh(us, us.objects.states, (a, b) => a !== b)));
-
-    svg.call(zoom);
+    function zoomed(event) {
+      const { transform } = event;
+      g.attr("transform", transform);
+      g.attr("stroke-width", 1 / transform.k);
+    }
 
     function reset() {
       states.transition().style("fill", null);
@@ -78,13 +53,31 @@ export default function Chart({ width, height }) {
         );
     }
 
-    function zoomed(event) {
-      const { transform } = event;
-      g.attr("transform", transform);
-      g.attr("stroke-width", 1 / transform.k);
-    }
+    const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
 
-    // return svg.node();
+    // const svg = d3.select(ref.current)
+    // svg.selectAll("*").remove()
+    const svg = d3
+      .create("svg")
+      .attr("viewBox", [0, 0, width, height])
+      .attr("width", width)
+      .attr("height", height)
+      .attr("style", "max-width: 100%; height: auto;")
+      .on("click", reset);
+
+    const path = d3.geoPath();
+
+    const g = svg.append("g");
+
+    const states = g
+      .append("g")
+      .attr("fill", "#444")
+      .attr("cursor", "pointer")
+      .selectAll("path")
+      .data(topojson.feature(us, us.objects.states).features)
+      .join("path")
+      .on("click", clicked)
+      .attr("d", path);
   };
 
   return <div width={width} height={height} ref={ref} />;
