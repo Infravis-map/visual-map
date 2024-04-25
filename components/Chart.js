@@ -55,10 +55,11 @@ export default function Chart({ width, height }) {
 
     const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
 
-    // const svg = d3.select(ref.current)
-    // svg.selectAll("*").remove()
-    const svg = d3
-      .create("svg")
+    const svg = d3.select(ref.current)
+    svg.selectAll("*").remove()
+    // const svg = d3
+    //   .create("svg")
+    svg
       .attr("viewBox", [0, 0, width, height])
       .attr("width", width)
       .attr("height", height)
@@ -80,5 +81,5 @@ export default function Chart({ width, height }) {
       .attr("d", path);
   };
 
-  return <div width={width} height={height} ref={ref} />;
+  return <svg width={width} height={height} ref={ref} />;
 }
