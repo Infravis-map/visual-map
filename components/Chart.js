@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import * as topojson from "topojson-client";
 // import { FileAttachment } from "d3-fetch";
 
-import us from "../files/states-albers-10m.json";
+import us from "../files/sweden.json";
 
 export default function Chart({ width, height }) {
   const ref = createRef();
@@ -57,8 +57,6 @@ export default function Chart({ width, height }) {
 
     const svg = d3.select(ref.current)
     svg.selectAll("*").remove()
-    // const svg = d3
-    //   .create("svg")
     svg
       .attr("viewBox", [0, 0, width, height])
       .attr("width", width)
@@ -75,7 +73,7 @@ export default function Chart({ width, height }) {
       .attr("fill", "#444")
       .attr("cursor", "pointer")
       .selectAll("path")
-      .data(topojson.feature(us, us.objects.states).features)
+      .data(topojson.feature(us, us.objects.LanLnBokstav4).features)
       .join("path")
       .on("click", clicked)
       .attr("d", path);
