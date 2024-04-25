@@ -57,8 +57,6 @@ export default function Chart({ width, height }) {
 
     const svg = d3.select(ref.current)
     svg.selectAll("*").remove()
-    // const svg = d3
-    //   .create("svg")
     svg
       .attr("viewBox", [0, 0, width, height])
       .attr("width", width)
