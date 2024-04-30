@@ -1,5 +1,5 @@
 import D3Example from '../components/D3Example'
-import Chart from '../components/Chart'
+//import Chart from '../components/Chart'
 import Project from '../components/Project'
 
 export default function TestPage() {
