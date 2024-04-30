@@ -13,8 +13,8 @@ const svgIcon = L.divIcon({
   className: "custom-div-icon",
   html: `
   <svg xmlns='http://www.w3.org/2000/svg'
-    width='10'
-    height='10'
+    width='38'
+    height='38'
     viewBox='0 0 24 24'
     fill='#DE1690'
     stroke-width='0'
@@ -26,8 +26,8 @@ const svgIcon = L.divIcon({
       r='10'
     />
   </svg>`,
-  iconSize: [10, 10], // size of the icon
-  iconAnchor: [22, 70], // point of the icon which will correspond to marker's location
+  iconSize: [38, 38], // size of the icon
+  iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
   popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
 });
 
@@ -53,19 +53,33 @@ export default function Map() {
           [1, 1],
         ]}
       />
-      <Marker position={[0, 0.2]} icon={svgIcon}>
+      <Marker position={[0.14, 0.14]} icon={svgIcon}>
         <Popup>ok. helo</Popup>
       </Marker>
-      <Marker position={[0, 0]} icon={svgIcon}>
+      <Marker position={[-0, 0]} icon={svgIcon}>
         <Popup>ok. helo</Popup>
       </Marker>
-      <Marker position={[0, 0]} icon={svgIcon}>
+      <Marker position={[-0, 0]} icon={svgIcon}>
         <Popup>ok. helo</Popup>
       </Marker>
-      <Marker position={[0, 0]} icon={svgIcon}>
+      <Marker position={[-0, 0]} icon={svgIcon}>
         <Popup>ok. helo</Popup>
       </Marker>
-      
+      <Marker position={[-0, 0]} icon={svgIcon}>
+        <Popup>ok. helo</Popup>
+      </Marker>
+      <Marker position={[-0, 0]} icon={svgIcon}>
+        <Popup>ok. helo</Popup>
+      </Marker>
+      <Marker position={[-0, 0]} icon={svgIcon}>
+        <Popup>ok. helo</Popup>
+      </Marker>
+      <Marker position={[-0.77, -0.12]} icon={svgIcon}>
+        <Popup>ok. helo</Popup>
+      </Marker>
+      <Marker position={[-0.86, -0.25]} icon={svgIcon}>
+        <Popup>ok. helo</Popup>
+      </Marker>
     </MapContainer>
   );
 }
