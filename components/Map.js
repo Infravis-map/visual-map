@@ -15,11 +15,11 @@ function DynamicMarkers() {
   const markerPositions = [
     [0.14, 0.14],
     [-0, 0],
-    [-0, 0],
-    [-0, 0],
-    [-0, 0],
-    [-0, 0],
-    [-0, 0],
+    // [-0, 0],
+    // [-0, 0],
+    // [-0, 0],
+    // [-0, 0],
+    // [-0, 0],
     [-0.77, -0.12],
     [-0.86, -0.25],
   ];
@@ -49,12 +49,38 @@ function DynamicMarkers() {
   }
 
   const color = "#ef42f5";
-  const size = 10;
+  const size = 30;
+
+  // Create state to manage marker opacities
+  const [markerOpacities, setMarkerOpacities] = useState(Array(markerPositions.length).fill(0.5));
+
+  // Function to handle marker click
+  const handleMarkerClick = (index) => {
+    const updatedOpacities = [...markerOpacities];
+    updatedOpacities[index] = 0.9; // Change opacity to 0.9 for the clicked marker
+    setMarkerOpacities(updatedOpacities);
+  };
+
+  // Function to handle marker mouseout
+  const handleMarkerMouseOut = (index) => {
+    const updatedOpacities = [...markerOpacities];
+    updatedOpacities[index] = 0.5; // Change opacity back to 0.5 for the mouseout marker
+    setMarkerOpacities(updatedOpacities);
+  };
 
   // Create an array to store dynamic markers
   const dynamicMarkers = markerPositions.map((position, index) => (
-    <Marker key={index} position={position} icon={createIcon(color, size)}>
-      <Popup>ok. hello</Popup>
+    <Marker
+      key={index}
+      position={position}
+      icon={createIcon(color, size)}
+      eventHandlers={{
+        click: () => handleMarkerClick(index),
+        mouseout: () => handleMarkerMouseOut(index),
+      }}
+      opacity={markerOpacities[index]}
+    >
+      {/* <Popup>ok. hello</Popup> */}
     </Marker>
   ));
 
