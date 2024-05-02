@@ -9,29 +9,33 @@ import {
 import { DivIcon, LatLngExpression, Layer } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-const svgIcon = L.divIcon({
-  className: "custom-div-icon",
-  html: `
-  <svg xmlns='http://www.w3.org/2000/svg'
-    width='38'
-    height='38'
-    viewBox='0 0 24 24'
-    fill='#DE1690'
-    stroke-width='0'
-    stroke-linecap='round'
-    stroke-linejoin='round'>
-    <circle
-      cx='12'
-      cy='12'
-      r='10'
-    />
-  </svg>`,
-  iconSize: [38, 38], // size of the icon
-  iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
-  popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
-});
+function createIcon(color, size) {
+  return L.divIcon({
+    className: "custom-div-icon",
+    html: `
+    <svg xmlns='http://www.w3.org/2000/svg'
+      width='${size}'
+      height='${size}'
+      viewBox='0 0 24 24'
+      fill='${color}'
+      stroke-width='0'
+      stroke-linecap='round'
+      stroke-linejoin='round'>
+      <circle
+        cx='12'
+        cy='12'
+        r='10'
+      />
+    </svg>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [-3, -76],
+  });
+}
 
 export default function Map() {
+  const svgIcon = createIcon("#ef42f5", 10);
+
   return (
     <MapContainer
       center={[0, 0]}
