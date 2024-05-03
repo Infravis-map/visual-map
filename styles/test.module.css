@@ -43,7 +43,15 @@
     background-color: #606060;
 }
 
+.splitContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
 .projectContainer {
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:15px;
     overflow-y:auto;
     scrollbar-width:none;
     scroll-behavior: smooth;
@@ -51,4 +59,38 @@
     border-radius:20px;
     background-color:gray;
     padding:15px;
+}
+
+.scrollDownButton {
+    height:40px;
+    width:60px;
+    border-radius: 20px;
+    background-color: grey;
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    margin-top: 15px;
+}
+.scrollDownButton:hover {
+    background-color: #606060;
+}
+
+@media (min-width: 450px) {
+    .splitContainer {
+        grid-template-columns: 1fr 1fr;
+    }
+    .scrollDownButton {
+        display: none;
+    }
+}
+
+@media (min-width: 1000px) {
+    .projectContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (min-width: 1500px) {
+    .projectContainer {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }

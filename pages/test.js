@@ -1,7 +1,7 @@
 import D3Example from '../components/D3Example'
 //import Chart from '../components/Chart'
 import Project from '../components/Project'
-import { useState } from "react"
+import { useState, useRef } from "react"
 import styles from '../styles/test.module.css'
 
 export default function TestPage() {
@@ -23,10 +23,10 @@ export default function TestPage() {
     const filterHeight = showFilter ? "100px" : "0px"
     const filterColor = showFilter ? "#DE1690" : ""
 
-
+    const mapRef = useRef(null);
     return (
-        <div style={{display:"grid", gridTemplateColumns:"1fr 1fr" }}>
-            <div style={{ display:"grid", gridTemplateRows:"auto 1fr", height:"100vh", padding:20, paddingRight:0}}>
+        <div className={styles.splitContainer}>
+            <div style={{ display:"grid", gridTemplateRows:"auto 1fr", height:"100vh", padding:20}}>
                 
                 
                 <form onSubmit={handleSubmit} style={{width:"100%"}}>
@@ -58,16 +58,29 @@ export default function TestPage() {
 
 
 
-                <div className={styles.projectContainer} style={{gap:15, display: "grid", gridTemplateColumns:"1fr 1fr" }}>
+                <div className={styles.projectContainer}>
+                    <Project/>
+                    <Project/>
+                    <Project/>
+                    <Project/>
+                    <Project/>
                     <Project/>
                     <Project/>
                     <Project/>
                     <Project/>
                     <Project/>
                 </div>
+                <div style={{width:"100%", display:"flex", justifyContent:"center"}}>
+                    <div onClick={() => window.scrollTo({top:mapRef.current.offsetTop, behavior:"smooth"})} className={styles.scrollDownButton}>
+                        <svg height="30px" width="30px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#FFFFFF" d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>
+                    </div>
+                </div>
             </div>
 
-            <D3Example width="200" height="200" />
+
+            <div ref={mapRef}>
+                <D3Example width="200" height="200" />
+            </div>
         </div>
     )
 }
