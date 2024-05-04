@@ -52,6 +52,7 @@
     display: grid;
     grid-template-rows: auto 1fr;
     height:100vh;
+    height:100svh;
     padding:15px;
 }
 
