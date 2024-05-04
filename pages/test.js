@@ -18,7 +18,7 @@ export default function TestPage() {
     }
 
     //style
-    const filterMargin = showFilter ? 20 : 10
+    const filterMargin = showFilter ? 20 : 7.5
     const filterPadding = showFilter ? 20 : 0
     const filterHeight = showFilter ? "100px" : "0px"
     const filterColor = showFilter ? "#DE1690" : ""
@@ -26,10 +26,10 @@ export default function TestPage() {
     const mapRef = useRef(null);
     return (
         <div className={styles.splitContainer}>
-            <div style={{ display:"grid", gridTemplateRows:"auto 1fr", height:"100vh", padding:20}}>
+            <div className={styles.searchSide}>
                 
                 
-                <form onSubmit={handleSubmit} style={{width:"100%"}}>
+                <form onSubmit={handleSubmit} style={{width:"100%", height:"100%"}}>
                     <div style={{display:"grid", gridTemplateColumns: "1fr auto auto", gap: 10}}>
                         <input type="text" value={search} name="search" onChange={(e) => setSearch(e.target.value)} placeholder="Search..." className={styles.searchBar}></input>
                     

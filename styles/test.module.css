@@ -48,6 +48,13 @@
     grid-template-columns: 1fr;
 }
 
+.searchSide {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height:100vh;
+    padding:15px;
+}
+
 .projectContainer {
     display:grid;
     grid-template-columns: 1fr;
