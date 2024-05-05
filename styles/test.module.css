@@ -83,22 +83,14 @@
     background-color: #606060;
 }
 
-@media (min-width: 450px) {
+@media (min-width: 600px) {
     .splitContainer {
         grid-template-columns: 1fr 1fr;
     }
     .scrollDownButton {
         display: none;
     }
-}
-
-@media (min-width: 1000px) {
     .projectContainer {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media (min-width: 1500px) {
-    .projectContainer {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 }

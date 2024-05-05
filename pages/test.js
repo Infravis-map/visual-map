@@ -59,16 +59,16 @@ export default function TestPage() {
 
 
                 <div className={styles.projectContainer}>
-                    <Project/>
-                    <Project/>
-                    <Project/>
-                    <Project/>
-                    <Project/>
-                    <Project/>
-                    <Project/>
-                    <Project/>
-                    <Project/>
-                    <Project/>
+                    <Project height={200}/>
+                    <Project height={150}/>
+                    <Project height={300}/>
+                    <Project height={400}/>
+                    <Project height={100}/>
+                    <Project height={250}/>
+                    <Project height={350}/>
+                    <Project height={225}/>
+                    <Project height={175}/>
+                    <Project height={125}/>
                 </div>
                 <div style={{width:"100%", display:"flex", justifyContent:"center"}}>
                     <div onClick={() => window.scrollTo({top:mapRef.current.offsetTop, behavior:"smooth"})} className={styles.scrollDownButton}>
