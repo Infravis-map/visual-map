@@ -1,8 +1,10 @@
 import D3Example from '../components/D3Example'
-//import Chart from '../components/Chart'
 import Project from '../components/Project'
 import { useState, useRef } from "react"
+import dynamic from 'next/dynamic'
 import styles from '../styles/test.module.css'
+
+const Map = dynamic(() => import('../components/Map.js'), { ssr: false });
 
 export default function TestPage() {
     const [search, setSearch] = useState("")
@@ -79,7 +81,8 @@ export default function TestPage() {
 
 
             <div ref={mapRef}>
-                <D3Example width="200" height="200" />
+                {/* <D3Example width="200" height="200" /> */}
+                <Map/>
             </div>
         </div>
     )
