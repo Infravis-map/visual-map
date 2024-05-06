@@ -8,16 +8,24 @@
 }
 
 .form label {
-    display: flex;
-    flex-direction: column;
+    display:flex;
+    flex-direction:column;
     margin-bottom: 15px;
 }
+
 
 .form label p {
     margin: 0;
     margin-bottom: 3px;
     font-size: small;
     color: grey;
+}
+
+.dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 0;
+    gap:20px;
 }
 
 @media (min-width: 700px) {
