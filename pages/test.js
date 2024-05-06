@@ -23,7 +23,7 @@ export default function TestPage() {
     const filterMargin = showFilter ? 20 : 7.5
     const filterPadding = showFilter ? 20 : 0
     const filterHeight = showFilter ? "100px" : "0px"
-    const filterColor = showFilter ? "#DE1690" : ""
+    const filterColor = showFilter ? "#DE1690" : "grey"
 
     const mapRef = useRef(null);
     return (
@@ -46,14 +46,18 @@ export default function TestPage() {
                     </div>
                     
                     <div className={styles.filterContainer} style={{height:filterHeight, marginBottom:filterMargin, marginTop:filterMargin, paddingTop:filterPadding, paddingBottom:filterPadding}}>
-                        <label for="filter1">filter 1:</label>
-                        <input type="checkbox" id="filter1" name="filter1" style={{marginRight:10}}/>
-                        <label for="filter2">filter 2:</label>
-                        <input type="checkbox" id="filter2" name="filter2" style={{marginRight:10}}/>
-                        <label for="filter3">filter 3:</label>
-                        <input type="checkbox" id="filter3" name="filter3" style={{marginRight:10}}/>
-                        <label for="filter4">filter 4:</label>
-                        <input type="checkbox" id="filter4" name="filter4"/>
+                        <label>filter 1:
+                            <input type="checkbox" id="filter1" name="filter1" style={{marginRight:10}}/>
+                        </label>
+                        <label>filter 2:
+                            <input type="checkbox" id="filter2" name="filter2" style={{marginRight:10}}/>
+                        </label>
+                        <label>filter 3:
+                            <input type="checkbox" id="filter3" name="filter3" style={{marginRight:10}}/>
+                        </label>
+                        <label>filter 4:
+                            <input type="checkbox" id="filter4" name="filter4"/>
+                        </label>
                     </div>
                 </form>
 
