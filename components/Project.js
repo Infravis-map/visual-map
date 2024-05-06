@@ -1,6 +1,6 @@
 
 
-export default function Project() {
+export default function Project(props) {
     return (
         <div style={{width:"100%", padding:0,}}>
             <div style={{padding:10, backgroundColor:"white", borderTopLeftRadius:10, borderTopRightRadius:10}}>
@@ -10,7 +10,7 @@ export default function Project() {
                 <h6 style={{margin:0, marginTop:5}}>Infravis Node Coordinator:</h6>
                 <p style={{margin:0}}>Mario</p>
             </div>
-            <div style={{height:100, backgroundColor:"lightgray", borderBottomLeftRadius:10, borderBottomRightRadius:10}}></div>
+            <div style={{ height: props.height, backgroundColor:"lightgray", borderBottomLeftRadius:10, borderBottomRightRadius:10}}></div>
         </div>
     )
 }
