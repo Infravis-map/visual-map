@@ -1,0 +1,27 @@
+.form {
+    display:flex;
+    flex-direction:column;
+    margin-left: 20px;
+    margin-right:20px;
+    margin-top:40px;
+    width:100%;
+}
+
+.form label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.form label p {
+    margin: 0;
+    margin-bottom: 3px;
+    font-size: small;
+    color: grey;
+}
+
+@media (min-width: 700px) {
+    .form {
+        width:60vw;
+    }
+}
