@@ -5,7 +5,7 @@
 .filterContainer {
     width:100%;
     background-color:grey;
-    contain:strict;
+    contain:layout paint;
     transition: all 0.2s ease-in-out;
     border-radius:20px;
     padding-left:20px;
