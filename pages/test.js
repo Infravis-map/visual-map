@@ -22,7 +22,7 @@ export default function TestPage() {
     //style
     const filterMargin = showFilter ? 20 : 7.5
     const filterPadding = showFilter ? 20 : 0
-    const filterHeight = showFilter ? "100px" : "0px"
+    const filterHeight = showFilter ? "10000px" : "0px"
     const filterColor = showFilter ? "#DE1690" : "grey"
 
     const mapRef = useRef(null);
@@ -45,7 +45,7 @@ export default function TestPage() {
                         </div>
                     </div>
                     
-                    <div className={styles.filterContainer} style={{height:filterHeight, marginBottom:filterMargin, marginTop:filterMargin, paddingTop:filterPadding, paddingBottom:filterPadding}}>
+                    <div className={styles.filterContainer} style={{maxHeight:filterHeight, marginBottom:filterMargin, marginTop:filterMargin, paddingTop:filterPadding, paddingBottom:filterPadding}}>
                         <label>filter 1:
                             <input type="checkbox" id="filter1" name="filter1" style={{marginRight:10}}/>
                         </label>
