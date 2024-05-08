@@ -1,7 +1,7 @@
 import { useState } from "react"
 import styles from '../styles/input.module.css'
 
-let institutionNumber = 1
+let institutionNumber = 0
 
 export default function InputPage() {
     
@@ -17,22 +17,26 @@ export default function InputPage() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(`title: ${title}`)
+        console.log(`handleSubmit() title: ${title}`)
     }
 
     const addInstitution = () => {
-        setInstitutions([
-            ...institutions,
-            {
+        if (institutionName.length > 0 && institutionHours > 0) {
+            
+            const newInstitutions = institutions.concat({
                 number:institutionNumber++, 
                 name:institutionName, 
                 hours:institutionHours,
-            }
-        ])
-        console.log("add")
-        console.log(institutions)
-        // setInstitutionName("")
-        // setInstitutionHours("")
+            })
+            setInstitutions(newInstitutions)
+            setInstitutionName("")
+            setInstitutionHours("")
+        }
+    }
+
+    const removeInstitution = (number) => {
+        const newInstitutions = institutions.filter((institution) => institution.number !== number)
+        setInstitutions(newInstitutions)
     }
 
     return (
@@ -58,27 +62,30 @@ export default function InputPage() {
                 </label>
                 <div>
                     <label>
-                        InfraVis Users
-                        <ul>
+                        InfraVis Locations
+                        <div className={styles.list}>
                             {institutions.map(institution => (
-                                <li key={institution.number}>
-                                    {institution.name}{' '}{institution.hours}
-                                    <button onClick={() => {
-                                    console.log(institutions),
-                                    setInstitutions(
-                                        institutions.filter((inst) =>
-                                            inst.number !== institution.number,
-                                        )
-                                    );
-                                    }}>
+                                <div className={styles.listElement} key={institution.number}>
+                                    {institution.name}{' - '}{institution.hours}{' hours'}
+                                    <div onClick={() => {removeInstitution(institution.number)}}>
                                     Delete
-                                    </button>
-                                </li>
+                                    </div>
+                                </div>
                             ))}
-                        </ul> 
-                        <input type="text" value={institutionName} onChange={(e) => setInstitutionName(e.target.value)} placeholder="KTH"></input>
-                        <input type="number" value={institutionHours} onChange={(e) => setInstitutionHours(e.target.value)} placeholder="40"></input>
-                        <button onClick={addInstitution}>Add</button>
+                        </div> 
+                        <div style={{display:"flex", flexDirection:"row"}}>
+                            <div>
+                                <p>location:</p>
+                                <input type="text" value={institutionName} onChange={(e) => setInstitutionName(e.target.value)} placeholder=""></input>
+                            </div>
+                            <div>
+                                <p>hours:</p>
+                                <input type="number" value={institutionHours} onChange={(e) => setInstitutionHours(e.target.value)} placeholder=""></input>
+                            </div>
+                            <div style={{display:"flex", flexDirection:"column-reverse"}}>
+                                <button style={{cursor:"pointer"}} onClick={addInstitution}>Add</button>
+                            </div>
+                        </div>
                     </label>
                 </div>
                 <div className={styles.dates}>
