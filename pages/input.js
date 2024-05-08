@@ -14,10 +14,15 @@ export default function InputPage() {
     const [institutions, setInstitutions] = useState([])
     const [institutionName, setInstitutionName] = useState("")
     const [institutionHours, setInstitutionHours] = useState("")
+    const [totalHours, setTotalHours] = useState(0)
+    const [priority, setPriority] = useState("")
+    const [link, setLink] = useState("")
+    const [keywords, setKeywords] = useState("")
+    const [image, setImage] = useState("")
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(`handleSubmit() title: ${title}`)
+        console.log(`handleSubmit() title: ${title}, total hours: ${totalHours}`)
     }
 
     const addInstitution = () => {
@@ -26,8 +31,9 @@ export default function InputPage() {
             const newInstitutions = institutions.concat({
                 number:institutionNumber++, 
                 name:institutionName, 
-                hours:institutionHours,
+                hours:parseInt(institutionHours),
             })
+            setTotalHours(totalHours + parseInt(institutionHours))
             setInstitutions(newInstitutions)
             setInstitutionName("")
             setInstitutionHours("")
@@ -36,6 +42,7 @@ export default function InputPage() {
 
     const removeInstitution = (number) => {
         const newInstitutions = institutions.filter((institution) => institution.number !== number)
+        setTotalHours(newInstitutions.reduce((total, current) => total += current.hours, 0))
         setInstitutions(newInstitutions)
     }
 
@@ -73,19 +80,20 @@ export default function InputPage() {
                                 </div>
                             ))}
                         </div> 
-                        <div style={{display:"flex", flexDirection:"row"}}>
+                        <div style={{display:"grid", gridTemplateColumns:"1fr 1fr auto"}}>
                             <div>
                                 <p>location:</p>
-                                <input type="text" value={institutionName} onChange={(e) => setInstitutionName(e.target.value)} placeholder=""></input>
+                                <input style={{width:"100%"}} type="text" value={institutionName} onChange={(e) => setInstitutionName(e.target.value)} placeholder=""></input>
                             </div>
                             <div>
                                 <p>hours:</p>
-                                <input type="number" value={institutionHours} onChange={(e) => setInstitutionHours(e.target.value)} placeholder=""></input>
+                                <input style={{width:"100%"}} type="number" value={institutionHours} onChange={(e) => setInstitutionHours(e.target.value)} placeholder=""></input>
                             </div>
-                            <div style={{display:"flex", flexDirection:"column-reverse"}}>
-                                <button style={{cursor:"pointer"}} onClick={addInstitution}>Add</button>
+                            <div style={{display:"flex", flexDirection:"column-reverse", marginLeft:20}}>
+                                <button style={{cursor:"pointer", backgroundColor:"lightgray"}} onClick={addInstitution}>Add</button>
                             </div>
                         </div>
+                        <p>total hours: {totalHours}</p>
                     </label>
                 </div>
                 <div className={styles.dates}>
@@ -98,6 +106,24 @@ export default function InputPage() {
                         <input type="date" value={enddate} name="enddate" onChange={(e) => setEnddate(e.target.value)}></input>
                     </label>
                 </div>
+                <label>
+                    Priority of project
+                    <input type="number" min="1" max="3" value={priority} name="priority" onChange={(e) => setPriority(e.target.value)}></input>
+                </label>
+                <label>
+                    Link to project on InfraVis website
+                    <p>example: <a target="_blank" rel="noopener noreferrer" href="https://infravis.se/visualizing-buzz-pollination/">https://infravis.se/visualizing-buzz-pollination/</a></p>
+                    <input type="url" value={link} name="link" onChange={(e) => setLink(e.target.value)}></input>
+                </label>
+                <label>
+                    Keywords
+                    <input type="text" value={keywords} name="keywords" onChange={(e) => setKeywords(e.target.value)}></input>
+                </label>
+                <label>
+                    Image
+                    <p>Is shown below basic info</p>
+                    <input type="file" accept="image/*" value={image} name="image" onChange={(e) => setImage(e.target.files[0])}></input>
+                </label>
             </form>
         </div>
     )
