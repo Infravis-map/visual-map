@@ -1,5 +1,4 @@
 import D3Example from '../components/D3Example'
-import Chart from '../components/Chart'
 import dynamic from 'next/dynamic';
 import Project from '../components/Project'
 

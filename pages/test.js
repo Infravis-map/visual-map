@@ -46,13 +46,13 @@ export default function TestPage() {
                     </div>
                     
                     <div className={styles.filterContainer} style={{height:filterHeight, marginBottom:filterMargin, marginTop:filterMargin, paddingTop:filterPadding, paddingBottom:filterPadding}}>
-                        <label for="filter1">filter 1:</label>
+                        <label htmlFor="filter1">filter 1:</label>
                         <input type="checkbox" id="filter1" name="filter1" style={{marginRight:10}}/>
-                        <label for="filter2">filter 2:</label>
+                        <label htmlFor="filter2">filter 2:</label>
                         <input type="checkbox" id="filter2" name="filter2" style={{marginRight:10}}/>
-                        <label for="filter3">filter 3:</label>
+                        <label htmlFor="filter3">filter 3:</label>
                         <input type="checkbox" id="filter3" name="filter3" style={{marginRight:10}}/>
-                        <label for="filter4">filter 4:</label>
+                        <label htmlFor="filter4">filter 4:</label>
                         <input type="checkbox" id="filter4" name="filter4"/>
                     </div>
                 </form>
@@ -81,7 +81,6 @@ export default function TestPage() {
 
 
             <div ref={mapRef}>
-                {/* <D3Example width="200" height="200" /> */}
                 <Map/>
             </div>
         </div>
