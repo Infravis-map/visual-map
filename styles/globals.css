@@ -18,3 +18,20 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.leaflet-container {
+  background: rgba(255, 255, 255, 0.75) !important;
+}
+
+.leaflet-control-zoom {
+  padding: 5px 2px;
+  border: none !important;
+  clip-path: inset(1px 1px 1px 1px round 9999px);
+}
+
+.leaflet-control-zoom,
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  background: #e83d84 !important;
+  color: white !important;
+}
