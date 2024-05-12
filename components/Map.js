@@ -132,6 +132,7 @@ export default function Map() {
   function DynamicEdges() {
     const dynamicEdges = edges.map((edge, index) => (
       <Polyline
+        weight={2}
         key={index}
         positions={[
           nodes.find((node) => node.id === edge.source).position,
@@ -145,29 +146,43 @@ export default function Map() {
   }
 
   return (
-    <MapContainer
-      center={[0, 0]}
-      minZoom={9}
-      zoom={9}
-      maxZoom={12}
-      attributionControl={false}
-      style={{ height: "100vh", width: "100%" }}
-      maxBounds={[
-        [-1, -1],
-        [1, 1],
-      ]} // Limit panning to these bounds
-      maxBoundsViscosity={0.95} // How solid the bounds are when user tries to pan outside
-      ref={setMap}
-    >
-      <ImageOverlay
-        url="se.svg"
-        bounds={[
+    <div>
+      <MapContainer
+        center={[0, 0]}
+        minZoom={9}
+        zoom={9}
+        maxZoom={12}
+        attributionControl={false}
+        style={{ height: "100vh", width: "100%" }}
+        maxBounds={[
           [-1, -1],
           [1, 1],
-        ]}
-      />
-      <DynamicMarkers />
-      <DynamicEdges />
-    </MapContainer>
+        ]} // Limit panning to these bounds
+        maxBoundsViscosity={0.95} // How solid the bounds are when user tries to pan outside
+        ref={setMap}
+      >
+        <ImageOverlay
+          url="se.svg"
+          bounds={[
+            [-1, -1],
+            [1, 1],
+          ]}
+        />
+        <DynamicMarkers />
+        <DynamicEdges />
+      </MapContainer>
+
+      {/* Legends */}
+      <div className="legend">
+        <div className="legend-item">
+          <div
+            className="legend-icon"
+            style={{ backgroundColor: "blue" }}
+          ></div>
+          <div className="legend-label">Marker 1</div>
+        </div>
+        {/* Add more legend items as needed */}
+      </div>
+    </div>
   );
 }
