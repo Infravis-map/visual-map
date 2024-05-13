@@ -46,17 +46,20 @@ export default function TestPage() {
                     </div>
                     
                     <div className={styles.filterContainer} style={{maxHeight:filterHeight, marginBottom:filterMargin, marginTop:filterMargin, paddingTop:filterPadding, paddingBottom:filterPadding}}>
-                        <label>filter 1:
-                            <input type="checkbox" id="filter1" name="filter1" style={{marginRight:10}}/>
+                        <label>Priority:
+                            <input type="checkbox" id="Priority" name="Priority"/>
                         </label>
-                        <label>filter 2:
-                            <input type="checkbox" id="filter2" name="filter2" style={{marginRight:10}}/>
+                        <label>start date
+                            <input type="checkbox" id="startdate" name="startdate"/>
                         </label>
-                        <label>filter 3:
-                            <input type="checkbox" id="filter3" name="filter3" style={{marginRight:10}}/>
+                        <label>end date
+                            <input type="checkbox" id="enddate" name="enddate"/>
                         </label>
-                        <label>filter 4:
-                            <input type="checkbox" id="filter4" name="filter4"/>
+                        <label>KTH
+                            <input type="checkbox" id="kth" name="kth"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
                         </label>
                     </div>
                 </form>
