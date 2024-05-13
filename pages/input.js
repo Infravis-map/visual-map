@@ -18,7 +18,9 @@ export default function InputPage() {
     const [priority, setPriority] = useState("")
     const [link, setLink] = useState("")
     const [keywords, setKeywords] = useState("")
-    const [image, setImage] = useState("")
+    const [image, setImage] = useState(null)
+
+    const imageDisplay = image ? "block" : "none"
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -37,6 +39,12 @@ export default function InputPage() {
             setInstitutions(newInstitutions)
             setInstitutionName("")
             setInstitutionHours("")
+        }
+    }
+
+    const changeImage = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setImage(URL.createObjectURL(e.target.files[0]))
         }
     }
 
@@ -117,12 +125,14 @@ export default function InputPage() {
                 </label>
                 <label>
                     Keywords
-                    <input type="text" value={keywords} name="keywords" onChange={(e) => setKeywords(e.target.value)}></input>
+                    <p>seperate by commas</p>
+                    <input type="text" value={keywords} name="keywords" onChange={(e) => setKeywords(e.target.value)} placeholder="Data, Visualization"></input>
                 </label>
                 <label>
                     Image
-                    <p>Is shown below basic info</p>
-                    <input type="file" accept="image/*" value={image} name="image" onChange={(e) => setImage(e.target.files[0])}></input>
+                    <p>the image is shown below basic info</p>
+                    <input type="file" accept="image/*"  name="image" onChange={(e) => changeImage(e)}></input>
+                    <img src={image} className={styles.inputImage} style={{display:imageDisplay}}></img>
                 </label>
             </form>
         </div>

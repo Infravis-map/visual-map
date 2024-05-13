@@ -60,6 +60,12 @@
     gap:20px;
 }
 
+.inputImage {
+    max-width: 500px;
+    border:solid;
+    margin-top: 10px;
+}
+
 @media (min-width: 700px) {
     .form {
         width:60vw;
