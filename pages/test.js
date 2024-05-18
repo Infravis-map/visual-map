@@ -22,7 +22,7 @@ export default function TestPage() {
     //style
     const filterMargin = showFilter ? 20 : 7.5
     const filterPadding = showFilter ? 20 : 0
-    const filterHeight = showFilter ? "10000px" : "0px"
+    const filterHeight = showFilter ? "200px" : "0px"
     const filterColor = showFilter ? "#DE1690" : "grey"
 
     const mapRef = useRef(null);
@@ -61,6 +61,52 @@ export default function TestPage() {
                         <label>Uppsala
                             <input type="checkbox" id="uppsala" name="uppsala"/>
                         </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+                        <label>Uppsala
+                            <input type="checkbox" id="uppsala" name="uppsala"/>
+                        </label>
+
                     </div>
                 </form>
 
