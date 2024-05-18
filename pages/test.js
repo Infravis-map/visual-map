@@ -22,10 +22,11 @@ export default function TestPage() {
         {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
         {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
     ])
+    const [enddate, setEnddate] = useState("")
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(`search: ${search}\nfilter: ${event.target.filter1.checked}, ${event.target.filter2.checked}, ${event.target.filter3.checked}, ${event.target.filter4.checked}`)
+        // console.log(`search: ${search}\nfilter: ${event.target.filter1.value}, ${event.target.filter2.checked}, ${event.target.filter3.checked}, ${event.target.filter4.checked}`)
     }
 
     const handleFilter = () => {
@@ -60,19 +61,16 @@ export default function TestPage() {
                     
                     <div className={styles.filterContainer} style={{maxHeight:filterHeight, marginBottom:filterMargin, marginTop:filterMargin, paddingTop:filterPadding, paddingBottom:filterPadding}}>
                         <label>Priority:
-                            <input type="checkbox" id="Priority" name="Priority"/>
+                            <input type="number" min="1" max="3" id="Priority" name="Priority"/>
                         </label>
                         <label>start date
-                            <input type="checkbox" id="startdate" name="startdate"/>
+                            <input type="date" max={enddate} id="startdate" name="startdate"/>
                         </label>
                         <label>end date
-                            <input type="checkbox" id="enddate" name="enddate"/>
+                            <input type="date" id="enddate" name="enddate" onChange={(e) => setEnddate(e.target.value)}/>
                         </label>
                         <label>KTH
                             <input type="checkbox" id="kth" name="kth"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
                         </label>
                     </div>
                 </form>
