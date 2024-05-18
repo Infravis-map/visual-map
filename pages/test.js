@@ -61,52 +61,6 @@ export default function TestPage() {
                         <label>Uppsala
                             <input type="checkbox" id="uppsala" name="uppsala"/>
                         </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-                        <label>Uppsala
-                            <input type="checkbox" id="uppsala" name="uppsala"/>
-                        </label>
-
                     </div>
                 </form>
 
