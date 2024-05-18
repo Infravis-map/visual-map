@@ -12,7 +12,7 @@ export default function TestPage() {
     const [projects, setProjects] = useState([
         {title:"Interesting title", nodes:["KTH", "Linnaeus University"], coordinator:"Mario", image:null},
         {title:"Test title", nodes:["KTH"], coordinator:"", image:null},
-        {title:"How stuff is visualized", nodes:[], coordinator:"Mario", image:null},
+        {title:"How stuff is visualized in a long title", nodes:[], coordinator:"Mario", image:null},
         {title:"Study in Visualization", nodes:["KTH", "Linnaeus University"], coordinator:"Mario", image:null},
         {title:"Visualizing title", nodes:["Linnaeus University", "KTH"], coordinator:"Mario", image:null},
         {title:"Vizualizing visuals", nodes:["KTH"], coordinator:"Mario", image:null},
