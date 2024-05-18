@@ -9,6 +9,19 @@ const Map = dynamic(() => import('../components/Map.js'), { ssr: false });
 export default function TestPage() {
     const [search, setSearch] = useState("")
     const [showFilter, setShowFilter] = useState(false)
+    const [projects, setProjects] = useState([
+        {title:"Interesting title", nodes:["KTH", "Linnaeus University"], coordinator:"Mario", image:null},
+        {title:"Test title", nodes:["KTH"], coordinator:"", image:null},
+        {title:"How stuff is visualized", nodes:[], coordinator:"Mario", image:null},
+        {title:"Study in Visualization", nodes:["KTH", "Linnaeus University"], coordinator:"Mario", image:null},
+        {title:"Visualizing title", nodes:["Linnaeus University", "KTH"], coordinator:"Mario", image:null},
+        {title:"Vizualizing visuals", nodes:["KTH"], coordinator:"Mario", image:null},
+        {title:"testing visuals", nodes:["KTH"], coordinator:"Mario", image:null},
+        {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
+        {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
+        {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
+        {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
+    ])
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -65,17 +78,17 @@ export default function TestPage() {
 
 
                 <div className={styles.projectContainer}>
-                    <Project height={200}/>
-                    <Project height={150}/>
-                    <Project height={300}/>
-                    <Project height={400}/>
-                    <Project height={100}/>
-                    <Project height={250}/>
-                    <Project height={350}/>
-                    <Project height={225}/>
-                    <Project height={175}/>
-                    <Project height={125}/>
+                    {projects.map(project => (
+                        <Project 
+                            title={project.title}
+                            nodes={project.nodes}
+                            coordinator={project.coordinator}
+                            firstImage={project.image}
+                            key={project.title + project.nodes + project.coordinator}
+                        />
+                    ))}
                 </div>
+ 
                 <div style={{width:"100%", display:"flex", justifyContent:"center"}}>
                     <div onClick={() => window.scrollTo({top:mapRef.current.offsetTop, behavior:"smooth"})} className={styles.scrollDownButton}>
                         <svg height="30px" width="30px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#FFFFFF" d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>

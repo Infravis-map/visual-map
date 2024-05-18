@@ -18,9 +18,10 @@ export default function InputPage() {
     const [priority, setPriority] = useState("")
     const [link, setLink] = useState("")
     const [keywords, setKeywords] = useState("")
-    const [image, setImage] = useState(null)
+    const [imageFile, setImageFile] = useState(null)
+    const [imagePreview, setImagePreview] = useState(null)
 
-    const imageDisplay = image ? "block" : "none"
+    const imageDisplay = imagePreview ? "block" : "none"
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -44,7 +45,8 @@ export default function InputPage() {
 
     const changeImage = (e) => {
         if (e.target.files && e.target.files[0]) {
-            setImage(URL.createObjectURL(e.target.files[0]))
+            setImageFile(e.target.files[0])
+            setImagePreview(URL.createObjectURL(e.target.files[0]))
         }
     }
 
@@ -132,7 +134,7 @@ export default function InputPage() {
                     Image
                     <p>the image is shown below basic info</p>
                     <input type="file" accept="image/*"  name="image" onChange={(e) => changeImage(e)}></input>
-                    <img src={image} className={styles.inputImage} style={{display:imageDisplay}}></img>
+                    <img src={imagePreview} className={styles.inputImage} style={{display:imageDisplay}}></img>
                 </label>
             </form>
         </div>
