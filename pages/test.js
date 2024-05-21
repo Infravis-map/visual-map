@@ -77,7 +77,7 @@ export default function TestPage() {
                             <input type="number" className={styles.numberInput} min="0" id="minhours" name="minhours" value={minHours} onChange={(e) => setMinHours(e.target.value)} />
                         </label>
                         <label>max hours
-                            <input type="number" className={styles.numberInput} min={minHours} max="100" id="maxhours" name="maxhours"/>
+                            <input type="number" className={styles.numberInput} min={minHours} id="maxhours" name="maxhours"/>
                         </label>
                         <label>Umeå University (UmU)
                             <input type="checkbox" id="umu" name="Umeå University (UmU)"/>
