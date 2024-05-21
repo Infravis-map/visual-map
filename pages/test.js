@@ -38,7 +38,7 @@ export default function TestPage() {
     //style
     const filterMargin = showFilter ? 20 : 7.5
     const filterPadding = showFilter ? 20 : 0
-    const filterHeight = showFilter ? "300px" : "0px"
+    const filterHeight = showFilter ? "350px" : "0px"
     const filterColor = showFilter ? "#DE1690" : "grey"
 
     const [filterOverflow, setFilterOverflow] = useState("auto")
@@ -64,20 +64,20 @@ export default function TestPage() {
                     </div>
                     
                     <div className={styles.filterContainer} style={{maxHeight:filterHeight, marginBottom:filterMargin, marginTop:filterMargin, paddingTop:filterPadding, paddingBottom:filterPadding, overflowY:filterOverflow}} onTransitionEnd={() => setFilterOverflow("auto")}>
-                        <label>Priority
-                            <input type="number" min="1" max="3" id="priority" name="priority"/>
-                        </label>
                         <label>start date
                             <input type="date" max={enddate} id="startdate" name="startdate"/>
                         </label>
                         <label>end date
                             <input type="date" id="enddate" name="enddate" onChange={(e) => setEnddate(e.target.value)}/>
                         </label>
+                        <label>Priority
+                            <input type="number" className={styles.numberInput} min="1" max="3" id="priority" name="priority"/>
+                        </label>
                         <label>min hours
-                            <input type="number" min="0" id="minhours" name="minhours" value={minHours} onChange={(e) => setMinHours(e.target.value)} />
+                            <input type="number" className={styles.numberInput} min="0" id="minhours" name="minhours" value={minHours} onChange={(e) => setMinHours(e.target.value)} />
                         </label>
                         <label>max hours
-                            <input type="number" min={minHours} id="maxhours" name="maxhours"/>
+                            <input type="number" className={styles.numberInput} min={minHours} max="100" id="maxhours" name="maxhours"/>
                         </label>
                         <label>Umeå University (UmU)
                             <input type="checkbox" id="umu" name="Umeå University (UmU)"/>

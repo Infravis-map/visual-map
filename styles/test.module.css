@@ -13,6 +13,19 @@
     transition-timing-function: ease-in-out;
 }
 
+.filterContainer label {
+    display: flex;
+    gap:3px;
+    background-color: lightgray;
+    border-radius: 5px;
+    padding: 4px;
+    padding-left:6px;
+}
+
+.numberInput {
+    width:60px;
+}
+
 .searchBar {
     transition: all 0.1s;
     width:100%;
