@@ -11,10 +11,8 @@ export default function InputPage() {
     const [enddate, setEnddate] = useState()
     const [coordinator, setCoordinator] = useState("")
     const [users, setUsers] = useState("")
-    const [institutions, setInstitutions] = useState([])
-    const [institutionName, setInstitutionName] = useState("")
-    const [institutionHours, setInstitutionHours] = useState("")
-    const [totalHours, setTotalHours] = useState(0)
+    const [institute, setInstitute] = useState(null)
+    const [hours, setHours] = useState("")
     const [priority, setPriority] = useState("")
     const [link, setLink] = useState("")
     const [keywords, setKeywords] = useState("")
@@ -22,24 +20,31 @@ export default function InputPage() {
 
     const imageDisplay = image ? "block" : "none"
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(`handleSubmit() title: ${title}, total hours: ${totalHours}`)
+    //dont change order, look at "instituteOptionsHandler" for reference
+    const instituteOptions = [
+        "Umeå University (UmU)", 
+        "Mid Sweden University (MIUM)",
+        "Uppsala University (UU)",
+        "KTH Stockholm (KTH)",
+        "Linköping University (LiU)",
+        "Chalmers",
+        "Gothenburg University (UGot)",
+        "Linnaeus University (LNU)",
+        "Lund University (LU)",
+    ];
+
+    const instituteOptionsHandler = (e) => {
+        const inst = instituteOptions.indexOf(e.target.value)
+        if (inst == -1) {
+            setInstitute(null)
+        } else {
+            setInstitute(inst)
+        }
     }
 
-    const addInstitution = () => {
-        if (institutionName.length > 0 && institutionHours > 0) {
-            
-            const newInstitutions = institutions.concat({
-                number:institutionNumber++, 
-                name:institutionName, 
-                hours:parseInt(institutionHours),
-            })
-            setTotalHours(totalHours + parseInt(institutionHours))
-            setInstitutions(newInstitutions)
-            setInstitutionName("")
-            setInstitutionHours("")
-        }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(`handleSubmit() title: ${title}, total hours: ${hours}`)
     }
 
     const changeImage = (e) => {
@@ -55,12 +60,6 @@ export default function InputPage() {
                 }
             }
         }
-    }
-
-    const removeInstitution = (number) => {
-        const newInstitutions = institutions.filter((institution) => institution.number !== number)
-        setTotalHours(newInstitutions.reduce((total, current) => total += current.hours, 0))
-        setInstitutions(newInstitutions)
     }
 
     return (
@@ -84,35 +83,25 @@ export default function InputPage() {
                     <p>seperate names by a comma</p>    
                     <input type="text" value={users} name="users" onChange={(e) => setUsers(e.target.value)} placeholder="John Smith, John Smith"></input>
                 </label>
-                <div>
-                    <label>
-                        InfraVis Locations
-                        <div className={styles.list}>
-                            {institutions.map(institution => (
-                                <div className={styles.listElement} key={institution.number}>
-                                    {institution.name}{' - '}{institution.hours}{' hours'}
-                                    <div onClick={() => {removeInstitution(institution.number)}}>
-                                    Delete
-                                    </div>
-                                </div>
-                            ))}
-                        </div> 
-                        <div style={{display:"grid", gridTemplateColumns:"1fr 1fr auto"}}>
-                            <div>
-                                <p>location:</p>
-                                <input style={{width:"100%"}} type="text" value={institutionName} onChange={(e) => setInstitutionName(e.target.value)} placeholder=""></input>
-                            </div>
-                            <div>
-                                <p>hours:</p>
-                                <input style={{width:"100%"}} type="number" value={institutionHours} onChange={(e) => setInstitutionHours(e.target.value)} placeholder=""></input>
-                            </div>
-                            <div style={{display:"flex", flexDirection:"column-reverse", marginLeft:20}}>
-                                <button style={{cursor:"pointer", backgroundColor:"lightgray"}} onClick={addInstitution}>Add</button>
-                            </div>
-                        </div>
-                        <p>total hours: {totalHours}</p>
-                    </label>
-                </div>
+                <label>
+                    Institute
+                    <p>The main institute of the project</p>    
+                    <select onChange={instituteOptionsHandler} style={{padding:3, fontSize:14}}>
+                        <option key="hej">Please choose an institute</option>
+                        {instituteOptions.map((option, index) => {
+                            return (
+                                <option key={index}>
+                                    {option}
+                                </option>
+                            );
+                        })}
+                    </select>    
+                </label>
+                <label>
+                    Number of hours spent on project
+                    <p>input a number</p>
+                    <input type="number" value={hours} name="hours" onChange={(e) => setHours(e.target.value)}></input>
+                </label>
                 <div className={styles.dates}>
                     <label>
                         Startdate
@@ -125,6 +114,7 @@ export default function InputPage() {
                 </div>
                 <label>
                     Priority of project
+                    <p>input a number 1 to 3</p>
                     <input type="number" min="1" max="3" value={priority} name="priority" onChange={(e) => setPriority(e.target.value)}></input>
                 </label>
                 <label>
