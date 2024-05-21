@@ -31,6 +31,7 @@ export default function TestPage() {
     }
 
     const handleFilter = () => {
+        setFilterOverflow("hidden")
         setShowFilter(!showFilter)
     }
 
@@ -39,6 +40,8 @@ export default function TestPage() {
     const filterPadding = showFilter ? 20 : 0
     const filterHeight = showFilter ? "300px" : "0px"
     const filterColor = showFilter ? "#DE1690" : "grey"
+
+    const [filterOverflow, setFilterOverflow] = useState("auto")
 
     const mapRef = useRef(null);
     return (
@@ -60,7 +63,7 @@ export default function TestPage() {
                         </div>
                     </div>
                     
-                    <div className={styles.filterContainer} style={{maxHeight:filterHeight, marginBottom:filterMargin, marginTop:filterMargin, paddingTop:filterPadding, paddingBottom:filterPadding}}>
+                    <div className={styles.filterContainer} style={{maxHeight:filterHeight, marginBottom:filterMargin, marginTop:filterMargin, paddingTop:filterPadding, paddingBottom:filterPadding, overflowY:filterOverflow}} onTransitionEnd={() => setFilterOverflow("auto")}>
                         <label>Priority
                             <input type="number" min="1" max="3" id="priority" name="priority"/>
                         </label>
