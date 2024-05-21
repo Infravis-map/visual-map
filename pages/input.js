@@ -67,7 +67,7 @@ export default function InputPage() {
             <form onSubmit={handleSubmit} className={styles.form}>
                 <label>
                     Title
-                    <input type="text" value={title} name="title" onChange={(e) => setTitle(e.target.value)} placeholder="Title"></input>
+                    <input required type="text" value={title} name="title" onChange={(e) => setTitle(e.target.value)} placeholder="Title"></input>
                 </label>
                 <label>
                     About
