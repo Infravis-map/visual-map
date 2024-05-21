@@ -10,17 +10,17 @@ export default function TestPage() {
     const [search, setSearch] = useState("")
     const [showFilter, setShowFilter] = useState(false)
     const [projects, setProjects] = useState([
-        {title:"Interesting title", nodes:["KTH", "Linnaeus University"], coordinator:"Mario", image:null},
-        {title:"Test title", nodes:["KTH"], coordinator:"", image:null},
-        {title:"How stuff is visualized in a long title", nodes:[], coordinator:"Mario", image:null},
-        {title:"Study in Visualization", nodes:["KTH", "Linnaeus University"], coordinator:"Mario", image:null},
-        {title:"Visualizing title", nodes:["Linnaeus University", "KTH"], coordinator:"Mario", image:null},
-        {title:"Vizualizing visuals", nodes:["KTH"], coordinator:"Mario", image:null},
-        {title:"testing visuals", nodes:["KTH"], coordinator:"Mario", image:null},
-        {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
-        {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
-        {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
-        {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
+        {title:"Interesting title", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Test title", institute:"KTH Stockholm (KTH)", coordinator:"", image:null},
+        {title:"How stuff is visualized in a long title", institute:null, coordinator:"Mario", image:null},
+        {title:"Study in Visualization", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Visualizing title", institute:"Linnaeus University (LNU)", coordinator:"Mario", image:null},
+        {title:"Vizualizing visuals", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"testing visuals", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Title test", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Title test", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Title test", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Title test", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
     ])
     const [enddate, setEnddate] = useState("")
 
@@ -70,7 +70,7 @@ export default function TestPage() {
                             <input type="date" id="enddate" name="enddate" onChange={(e) => setEnddate(e.target.value)}/>
                         </label>
                         <label>KTH
-                            <input type="checkbox" id="kth" name="kth"/>
+                            <input type="checkbox" id="kth" name="KTH Stockholm (KTH)"/>
                         </label>
                     </div>
                 </form>
@@ -82,7 +82,7 @@ export default function TestPage() {
                     {projects.map(project => (
                         <Project 
                             title={project.title}
-                            nodes={project.nodes}
+                            institute={project.institute}
                             coordinator={project.coordinator}
                             firstImage={project.image}
                             key={project.title + project.nodes + project.coordinator}
