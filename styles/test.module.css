@@ -10,6 +10,7 @@
     flex-wrap: wrap;
     transition-property: max-height, margin, padding;
     transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
 }
 
 .searchBar {
