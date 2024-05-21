@@ -1,14 +1,23 @@
 import { useState } from "react"
 
 
-export default function Project({title, nodes, coordinator, firstImage}) {
+export default function Project({title, institute, coordinator, firstImage}) {
     const [image, setImage] = useState(firstImage)
     const containerBorderRadius = image ? 0 : 10
     const [showEdit, setShowEdit] = useState(false)
 
     const changeImage = (e) => {
         if (e.target.files && e.target.files[0]) {
-            setImage(e.target.files[0])
+            //setImage(e.target.files[0])
+            const reader = new FileReader()
+            reader.readAsDataURL(e.target.files[0])
+            reader.onload = () => {
+                console.log('called: ', reader.result)
+                const readFile = (reader.result).toString()
+                console.log(readFile.length)
+                setImage(readFile)
+            }
+            //console.log(e.target.files[0])
         }
     }
 
@@ -17,10 +26,10 @@ export default function Project({title, nodes, coordinator, firstImage}) {
             <div style={{padding:10, backgroundColor:"white", borderTopLeftRadius:10, borderTopRightRadius:10, borderBottomLeftRadius:containerBorderRadius, borderBottomRightRadius:containerBorderRadius}}>
                 <h2 style={{margin:0, marginBottom:7}}>{title}</h2>
 
-                {nodes.length >= 1 ? 
+                {institute ? 
                     <div>
-                        <h6 style={{margin:0, marginTop:5, color:"grey"}}>Infravis Node:</h6>
-                        <p style={{margin:0}}>{nodes.join(", ")}</p>
+                        <h6 style={{margin:0, marginTop:5, color:"grey"}}>Institute:</h6>
+                        <p style={{margin:0}}>{institute}</p>
                     </div>
                 : null}
 
@@ -37,7 +46,7 @@ export default function Project({title, nodes, coordinator, firstImage}) {
                 
             </div>
             {image ? 
-                <img src={URL.createObjectURL(image)} style={{ width:"100%", maxHeight:"150px", objectFit:"cover", borderBottomLeftRadius:10, borderBottomRightRadius:10}}></img>
+                <img src={image} style={{ width:"100%", maxHeight:"150px", objectFit:"cover", borderBottomLeftRadius:10, borderBottomRightRadius:10}}></img>
             : null}
             
         </div>

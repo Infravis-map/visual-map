@@ -10,33 +10,38 @@ export default function TestPage() {
     const [search, setSearch] = useState("")
     const [showFilter, setShowFilter] = useState(false)
     const [projects, setProjects] = useState([
-        {title:"Interesting title", nodes:["KTH", "Linnaeus University"], coordinator:"Mario", image:null},
-        {title:"Test title", nodes:["KTH"], coordinator:"", image:null},
-        {title:"How stuff is visualized in a long title", nodes:[], coordinator:"Mario", image:null},
-        {title:"Study in Visualization", nodes:["KTH", "Linnaeus University"], coordinator:"Mario", image:null},
-        {title:"Visualizing title", nodes:["Linnaeus University", "KTH"], coordinator:"Mario", image:null},
-        {title:"Vizualizing visuals", nodes:["KTH"], coordinator:"Mario", image:null},
-        {title:"testing visuals", nodes:["KTH"], coordinator:"Mario", image:null},
-        {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
-        {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
-        {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
-        {title:"Title test", nodes:["KTH"], coordinator:"Mario", image:null},
+        {title:"Interesting title", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Test title", institute:"KTH Stockholm (KTH)", coordinator:"", image:null},
+        {title:"How stuff is visualized in a long title", institute:null, coordinator:"Mario", image:null},
+        {title:"Study in Visualization", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Visualizing title", institute:"Linnaeus University (LNU)", coordinator:"Mario", image:null},
+        {title:"Vizualizing visuals", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"testing visuals", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Title test", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Title test", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Title test", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Title test", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
     ])
+    const [enddate, setEnddate] = useState(null)
+    const [minHours, setMinHours] = useState(0)
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(`search: ${search}\nfilter: ${event.target.filter1.checked}, ${event.target.filter2.checked}, ${event.target.filter3.checked}, ${event.target.filter4.checked}`)
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(`search: ${search}\nfilter: priority: "${e.target.priority.value}"\nstartdate: "${e.target.startdate.value}" enddate: "${e.target.enddate.value}"\nminhours: "${e.target.minhours.value}" maxhours: "${e.target.maxhours.value}"\numu:${e.target.umu.checked} mium:${e.target.mium.checked} uu:${e.target.uu.checked} kth:${e.target.kth.checked} liu:${e.target.liu.checked} chalmers:${e.target.chalmers.checked} ugot:${e.target.ugot.checked} lnu:${e.target.lnu.checked} lu:${e.target.lu.checked}`)
     }
 
     const handleFilter = () => {
+        setFilterOverflow("hidden")
         setShowFilter(!showFilter)
     }
 
     //style
     const filterMargin = showFilter ? 20 : 7.5
     const filterPadding = showFilter ? 20 : 0
-    const filterHeight = showFilter ? "10000px" : "0px"
+    const filterHeight = showFilter ? "350px" : "0px"
     const filterColor = showFilter ? "#DE1690" : "grey"
+
+    const [filterOverflow, setFilterOverflow] = useState("auto")
 
     const mapRef = useRef(null);
     return (
@@ -58,18 +63,48 @@ export default function TestPage() {
                         </div>
                     </div>
                     
-                    <div className={styles.filterContainer} style={{maxHeight:filterHeight, marginBottom:filterMargin, marginTop:filterMargin, paddingTop:filterPadding, paddingBottom:filterPadding}}>
-                        <label>filter 1:
-                            <input type="checkbox" id="filter1" name="filter1" style={{marginRight:10}}/>
+                    <div className={styles.filterContainer} style={{maxHeight:filterHeight, marginBottom:filterMargin, marginTop:filterMargin, paddingTop:filterPadding, paddingBottom:filterPadding, overflowY:filterOverflow}} onTransitionEnd={() => setFilterOverflow("auto")}>
+                        <label>start date
+                            <input type="date" max={enddate} id="startdate" name="startdate"/>
                         </label>
-                        <label>filter 2:
-                            <input type="checkbox" id="filter2" name="filter2" style={{marginRight:10}}/>
+                        <label>end date
+                            <input type="date" id="enddate" name="enddate" onChange={(e) => setEnddate(e.target.value)}/>
                         </label>
-                        <label>filter 3:
-                            <input type="checkbox" id="filter3" name="filter3" style={{marginRight:10}}/>
+                        <label>Priority
+                            <input type="number" className={styles.numberInput} min="1" max="3" id="priority" name="priority"/>
                         </label>
-                        <label>filter 4:
-                            <input type="checkbox" id="filter4" name="filter4"/>
+                        <label>min hours
+                            <input type="number" className={styles.numberInput} min="0" id="minhours" name="minhours" value={minHours} onChange={(e) => setMinHours(e.target.value)} />
+                        </label>
+                        <label>max hours
+                            <input type="number" className={styles.numberInput} min={minHours} max="100" id="maxhours" name="maxhours"/>
+                        </label>
+                        <label>Umeå University (UmU)
+                            <input type="checkbox" id="umu" name="Umeå University (UmU)"/>
+                        </label>
+                        <label>Mid Sweden University (MIUM)
+                            <input type="checkbox" id="mium" name="Mid Sweden University (MIUM)"/>
+                        </label>
+                        <label>Uppsala University (UU)
+                            <input type="checkbox" id="uu" name="Uppsala University (UU)"/>
+                        </label>
+                        <label>KTH Stockholm (KTH)
+                            <input type="checkbox" id="kth" name="KTH Stockholm (KTH)"/>
+                        </label>
+                        <label>Linköping University (LiU)
+                            <input type="checkbox" id="liu" name="Linköping University (LiU)"/>
+                        </label>
+                        <label>Chalmers
+                            <input type="checkbox" id="chalmers" name="Chalmers"/>
+                        </label>
+                        <label>Gothenburg University (UGot)
+                            <input type="checkbox" id="ugot" name="Gothenburg University (UGot)"/>
+                        </label>
+                        <label>Linnaeus University (LNU)
+                            <input type="checkbox" id="lnu" name="Linnaeus University (LNU)"/>
+                        </label>
+                        <label>Lund University (LU)
+                            <input type="checkbox" id="lu" name="Lund University (LU)"/>
                         </label>
                     </div>
                 </form>
@@ -81,7 +116,7 @@ export default function TestPage() {
                     {projects.map(project => (
                         <Project 
                             title={project.title}
-                            nodes={project.nodes}
+                            institute={project.institute}
                             coordinator={project.coordinator}
                             firstImage={project.image}
                             key={project.title + project.nodes + project.coordinator}
