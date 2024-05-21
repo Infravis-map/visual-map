@@ -26,7 +26,7 @@ export default function TestPage() {
     const [minHours, setMinHours] = useState(0)
 
     const handleSubmit = (e) => {
-        event.preventDefault();
+        e.preventDefault();
         console.log(`search: ${search}\nfilter: priority: "${e.target.priority.value}"\nstartdate: "${e.target.startdate.value}" enddate: "${e.target.enddate.value}"\nminhours: "${e.target.minhours.value}" maxhours: "${e.target.maxhours.value}"\numu:${e.target.umu.checked} mium:${e.target.mium.checked} uu:${e.target.uu.checked} kth:${e.target.kth.checked} liu:${e.target.liu.checked} chalmers:${e.target.chalmers.checked} ugot:${e.target.ugot.checked} lnu:${e.target.lnu.checked} lu:${e.target.lu.checked}`)
     }
 
