@@ -13,37 +13,31 @@ import "leaflet/dist/leaflet.css";
 const baseMarkerSize = 30;
 
 const nodes = [
-  { id: 1, position: [0.14, 0.14], size: 1.0 },
-  { id: 2, position: [-0, 0], size: 1.0 },
-  { id: 3, position: [-0.355, 0.01], size: 0.7 },
-  { id: 4, position: [-0.425, 0.023], size: 1.0 },
-  { id: 5, position: [-0.525, -0.1], size: 0.2 },
-  { id: 6, position: [-0.62, -0.34], size: 1.0 },
-  { id: 7, position: [-0.77, -0.12], size: 1.0 },
-  { id: 8, position: [-0.86, -0.25], size: 1.0 },
+  { id: 0, name: "Umeå University", position: [0.14, 0.14], size: 1.0 },
+  { id: 1, name: "Mid Sweden University", position: [-0, 0], size: 1.0 },
+  { id: 2, name: "Uppsala University", position: [-0.355, 0.01], size: 0.7 },
+  { id: 3, name: "KTH Stockholm", position: [-0.425, 0.023], size: 1.0 },
+  { id: 4, name: "Linköpings University", position: [-0.525, -0.1], size: 0.8 },
+  { id: 5, name: "Chalmers / Gothenburg University", position: [-0.62, -0.34], size: 1.0 },
+  { id: 6, name: "", position: [-0.62, -0.34], size: 0.0 },
+  { id: 7, name: "Linnaeus University", position: [-0.77, -0.12], size: 1.0 },
+  { id: 8, name: "Lund University", position: [-0.86, -0.25], size: 1.0 },
   // Add more nodes as needed
 ];
 
 const edges = [
+  { source: 0, target: 1 },
   { source: 1, target: 2 },
-  { source: 1, target: 3 },
-  { source: 1, target: 4 },
-  { source: 1, target: 5 },
-  { source: 1, target: 6 },
-  { source: 1, target: 7 },
-  { source: 1, target: 8 },
   { source: 2, target: 3 },
   { source: 3, target: 4 },
   { source: 4, target: 5 },
   { source: 5, target: 6 },
   { source: 6, target: 7 },
-  { source: 7, target: 8 },
-  { source: 2, target: 3 },
-  { source: 3, target: 4 },
-  { source: 4, target: 5 },
-  { source: 5, target: 6 },
-  { source: 6, target: 7 },
-  { source: 7, target: 8 },
+  { source: 7, target: 0 },
+  { source: 0, target: 2 },
+  { source: 2, target: 4 },
+  { source: 4, target: 6 },
+  { source: 6, target: 0 }
   // Add more edges as needed
 ];
 
@@ -74,7 +68,7 @@ export default function Map() {
     </svg>`,
         iconSize: [size, size],
         iconAnchor: [size / 2, size / 2],
-        popupAnchor: [-3, -76],
+        popupAnchor: [0, -size / 2],
       });
     }
 
@@ -85,13 +79,18 @@ export default function Map() {
 
     // Function to handle marker click
     const handleMarkerClick = (index) => {
+      console.log("Marker clicked: ", index);
+      if (selectedMarkerIndex === index) {
+        setSelectedMarkerIndex(null);
+        return;
+      }
       setSelectedMarkerIndex(index);
     };
 
     const [zoomLevel, setZoomLevel] = useState(9);
 
     const handleZoomEnd = () => {
-      console.log("Zoom level: ", map.getZoom());
+      // console.log("Zoom level: ", map.getZoom());
       setZoomLevel(map.getZoom());
     };
 
@@ -112,7 +111,7 @@ export default function Map() {
     const dynamicMarkers = nodes.map((node) => (
       <Marker
         key={node.id}
-        position={node.position}
+        position={node.position} 
         icon={createIcon(
           color,
           baseMarkerSize * Math.pow(2, zoomLevel - 9) * node.size
@@ -122,7 +121,11 @@ export default function Map() {
         }}
         opacity={selectedMarkerIndex === node.id ? 0.9 : 0.5}
       >
-        {/* <Popup>ok. hello</Popup> */}
+        {/* {selectedMarkerIndex === node.id && ( */}
+          <Popup className="custom-popup">
+            {node.name}
+          </Popup>
+        {/* )} */}
       </Marker>
     ));
 
@@ -173,13 +176,21 @@ export default function Map() {
       </MapContainer>
 
       {/* Legends */}
+      {/* Legends */}
       <div className="legend">
         <div className="legend-item">
           <div
             className="legend-icon"
-            style={{ backgroundColor: "blue" }}
+            style={{ backgroundColor: "#ef42f5", width: "20px", height: "20px", borderRadius: "50%" }}
           ></div>
-          <div className="legend-label">Marker 1</div>
+          <div className="legend-label">University</div>
+        </div>
+        <div className="legend-item">
+          <div
+            className="legend-line"
+            style={{ backgroundColor: "#ef42f5", width: "40px", height: "2px" }}
+          ></div>
+          <div className="legend-label">Connections</div>
         </div>
         {/* Add more legend items as needed */}
       </div>
