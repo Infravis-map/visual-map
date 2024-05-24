@@ -10,6 +10,7 @@ export default function InputPage() {
     const [startdate, setStartdate] = useState()
     const [enddate, setEnddate] = useState()
     const [coordinator, setCoordinator] = useState("")
+    const [applicationExperts, setApplicationExperts] = useState("")
     const [users, setUsers] = useState("")
     const [institute, setInstitute] = useState(null)
     const [hours, setHours] = useState("")
@@ -80,6 +81,11 @@ export default function InputPage() {
                     <input type="text" value={coordinator} name="coordinator" onChange={(e) => setCoordinator(e.target.value)} placeholder="John Smith"></input>
                 </label>
                 <label>
+                    InfraVis Application Experts
+                    <p>seperate names by a comma</p>    
+                    <input type="text" value={applicationExperts} name="applicationExperts" onChange={(e) => setApplicationExperts(e.target.value)} placeholder="John Smith, John Smith"></input>
+                </label>
+                <label>
                     InfraVis Users
                     <p>seperate names by a comma</p>    
                     <input type="text" value={users} name="users" onChange={(e) => setUsers(e.target.value)} placeholder="John Smith, John Smith"></input>
@@ -121,7 +127,7 @@ export default function InputPage() {
                 <label>
                     Link to project on InfraVis website
                     <p>example: <a target="_blank" rel="noopener noreferrer" href="https://infravis.se/visualizing-buzz-pollination/">https://infravis.se/visualizing-buzz-pollination/</a></p>
-                    <input type="url" value={link} name="link" onChange={(e) => setLink(e.target.value)} required></input>
+                    <input type="url" value={link} name="link" onChange={(e) => setLink(e.target.value)} requ></input>
                 </label>
                 <label>
                     Keywords
