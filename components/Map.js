@@ -1,20 +1,18 @@
-import { useEffect, useState, useRef, createRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   MapContainer,
   ImageOverlay,
-  TileLayer,
   Marker,
   Popup,
   Polyline,
 } from "react-leaflet";
-import { DivIcon, LatLngExpression, Layer } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 const baseMarkerSize = 30;
 
 const nodes = [
   { id: 0, name: "Umeå University", position: [0.14, 0.14], size: 1.0 },
-  { id: 1, name: "Mid Sweden University", position: [-0, 0], size: 1.0 },
+  { id: 1, name: "Mid Sweden University", position: [0, 0], size: 1.0 },
   { id: 2, name: "Uppsala University", position: [-0.355, 0.01], size: 0.7 },
   { id: 3, name: "KTH Stockholm", position: [-0.425, 0.023], size: 1.0 },
   { id: 4, name: "Linköpings University", position: [-0.525, -0.1], size: 0.8 },
@@ -43,6 +41,7 @@ const edges = [
 
 export default function Map() {
   const [map, setMap] = useState(null);
+  const [showEdges, setShowEdges] = useState(true); // State variable to toggle edges
 
   // Define a functional component to render dynamic markers
   function DynamicMarkers() {
@@ -76,26 +75,24 @@ export default function Map() {
 
     // Holding state of which marker is selected
     const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
+    const markerRefs = useRef([]); // To store marker references
 
     // Function to handle marker click
     const handleMarkerClick = (index) => {
-      console.log("Marker clicked: ", index);
       if (selectedMarkerIndex === index) {
         setSelectedMarkerIndex(null);
-        return;
+      } else {
+        setSelectedMarkerIndex(index);
       }
-      setSelectedMarkerIndex(index);
     };
 
     const [zoomLevel, setZoomLevel] = useState(9);
 
     const handleZoomEnd = () => {
-      // console.log("Zoom level: ", map.getZoom());
       setZoomLevel(map.getZoom());
     };
 
     useEffect(() => {
-      console.log("Map instance: ", map);
       if (map) {
         map.on("zoomend", handleZoomEnd);
       }
@@ -105,10 +102,22 @@ export default function Map() {
           map.off("zoomend", handleZoomEnd);
         }
       };
-    }, []);
+    }, [map]);
+
+    useEffect(() => {
+      if (selectedMarkerIndex !== null && markerRefs.current[selectedMarkerIndex]) {
+        markerRefs.current[selectedMarkerIndex].openPopup();
+      }
+      // Close other popups
+      markerRefs.current.forEach((marker, index) => {
+        if (index !== selectedMarkerIndex && marker) {
+          marker.closePopup();
+        }
+      });
+    }, [selectedMarkerIndex]);
 
     // Create an array to store dynamic markers
-    const dynamicMarkers = nodes.map((node) => (
+    const dynamicMarkers = nodes.map((node, index) => (
       <Marker
         key={node.id}
         position={node.position} 
@@ -117,15 +126,14 @@ export default function Map() {
           baseMarkerSize * Math.pow(2, zoomLevel - 9) * node.size
         )}
         eventHandlers={{
-          click: () => handleMarkerClick(node.id),
+          click: () => handleMarkerClick(index),
         }}
         opacity={selectedMarkerIndex === node.id ? 0.9 : 0.5}
+        ref={(el) => (markerRefs.current[index] = el)}
       >
-        {/* {selectedMarkerIndex === node.id && ( */}
-          <Popup className="custom-popup">
-            {node.name}
-          </Popup>
-        {/* )} */}
+        <Popup>
+          {node.name}
+        </Popup>
       </Marker>
     ));
 
@@ -135,13 +143,14 @@ export default function Map() {
   function DynamicEdges() {
     const dynamicEdges = edges.map((edge, index) => (
       <Polyline
-        weight={2}
+        weight={3}
         key={index}
         positions={[
           nodes.find((node) => node.id === edge.source).position,
           nodes.find((node) => node.id === edge.target).position,
         ]}
         color="#ef42f5"
+        opacity={0.5}
       />
     ));
 
@@ -172,10 +181,14 @@ export default function Map() {
           ]}
         />
         <DynamicMarkers />
-        <DynamicEdges />
+        {showEdges && <DynamicEdges />} {/* Conditionally render edges */}
       </MapContainer>
 
-      {/* Legends */}
+      {/* Toggle button */}
+      <button onClick={() => setShowEdges(!showEdges)} className="toggle-button">
+        {showEdges ? 'Hide Edges' : 'Show Edges'}
+      </button>
+
       {/* Legends */}
       <div className="legend">
         <div className="legend-item">
