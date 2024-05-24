@@ -63,7 +63,8 @@ export default function InputPage() {
     }
 
     return (
-        <div style={{display:"flex", justifyContent:"center"}}>
+        <div style={{display:"flex", alignItems:"center", flexDirection:"column"}}>
+            <h1 style={{marginTop:60}}>Add project to database</h1>
             <form onSubmit={handleSubmit} className={styles.form}>
                 <label>
                     Title
@@ -72,7 +73,7 @@ export default function InputPage() {
                 <label>
                     About
                     <p>roughly 150 words</p>
-                    <input type="text" value={about} name="about" onChange={(e) => setAbout(e.target.value)} placeholder="About"></input>
+                    <textarea type="text" value={about} name="about" onChange={(e) => setAbout(e.target.value)} placeholder="About" style={{height:"5rem", resize:"vertical"}}></textarea>
                 </label>
                 <label>
                     InfraVis Node Coordinator  
@@ -86,11 +87,11 @@ export default function InputPage() {
                 <label>
                     Institute
                     <p>The main institute of the project</p>    
-                    <select onChange={instituteOptionsHandler} style={{padding:3, fontSize:14}}>
-                        <option key="hej">Please choose an institute</option>
+                    <select onChange={instituteOptionsHandler} style={{padding:3, fontSize:14}} required>
+                        <option key="choose institute" value="">Please choose an institute</option>
                         {instituteOptions.map((option, index) => {
                             return (
-                                <option key={index}>
+                                <option key={index} value={index}>
                                     {option}
                                 </option>
                             );
@@ -120,7 +121,7 @@ export default function InputPage() {
                 <label>
                     Link to project on InfraVis website
                     <p>example: <a target="_blank" rel="noopener noreferrer" href="https://infravis.se/visualizing-buzz-pollination/">https://infravis.se/visualizing-buzz-pollination/</a></p>
-                    <input type="url" value={link} name="link" onChange={(e) => setLink(e.target.value)}></input>
+                    <input type="url" value={link} name="link" onChange={(e) => setLink(e.target.value)} required></input>
                 </label>
                 <label>
                     Keywords
@@ -132,6 +133,15 @@ export default function InputPage() {
                     <p>the image is shown below basic info</p>
                     <input type="file" accept="image/*"  name="image" onChange={(e) => changeImage(e)}></input>
                     <img src={image} className={styles.inputImage} style={{display:imageDisplay}}></img>
+                </label>
+                <label style={{marginTop:30, borderStyle:"solid", borderColor:"red", borderWidth:1, padding:20, paddingTop:15, borderRadius:5}}>
+                    Password
+                    <p>needed to add the project to the database</p>
+                    <input type="password" required></input>
+                </label>
+                <label style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:10}}>
+                    Submit
+                    <input type="submit" style={{width:100, height:40, marginTop:5, backgroundColor:"lightblue", borderRadius:10}}></input>
                 </label>
             </form>
         </div>
