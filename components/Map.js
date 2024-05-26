@@ -1,33 +1,56 @@
-import { useEffect, useState, useRef, createRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   MapContainer,
   ImageOverlay,
-  TileLayer,
   Marker,
   Popup,
+  Polyline,
 } from "react-leaflet";
-import { DivIcon, LatLngExpression, Layer } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// Define a functional component to render dynamic markers
-function DynamicMarkers() {
-  // Define an array of marker positions
-  const markerPositions = [
-    [0.14, 0.14],
-    [-0, 0],
-    // [-0, 0],
-    // [-0, 0],
-    // [-0, 0],
-    // [-0, 0],
-    // [-0, 0],
-    [-0.77, -0.12],
-    [-0.86, -0.25],
-  ];
+const baseMarkerSize = 30;
 
-  function createIcon(color, size) {
-    return L.divIcon({
-      className: "custom-div-icon",
-      html: `
+const nodes = [
+  { id: 0, name: "Umeå University", position: [0.14, 0.14], size: 1.0 },
+  { id: 1, name: "Mid Sweden University", position: [0, 0], size: 1.0 },
+  { id: 2, name: "Uppsala University", position: [-0.355, 0.01], size: 0.7 },
+  { id: 3, name: "KTH Stockholm", position: [-0.425, 0.023], size: 1.0 },
+  { id: 4, name: "Linköpings University", position: [-0.525, -0.1], size: 0.8 },
+  { id: 5, name: "Chalmers / Gothenburg University", position: [-0.62, -0.34], size: 1.0 },
+  { id: 6, name: "", position: [-0.62, -0.34], size: 0.0 },
+  { id: 7, name: "Linnaeus University", position: [-0.77, -0.12], size: 1.0 },
+  { id: 8, name: "Lund University", position: [-0.86, -0.25], size: 1.0 },
+  // Add more nodes as needed
+];
+
+const edges = [
+  { source: 0, target: 1 },
+  { source: 1, target: 2 },
+  { source: 2, target: 3 },
+  { source: 3, target: 4 },
+  { source: 4, target: 5 },
+  { source: 5, target: 6 },
+  { source: 6, target: 7 },
+  { source: 7, target: 0 },
+  { source: 0, target: 2 },
+  { source: 2, target: 4 },
+  { source: 4, target: 6 },
+  { source: 6, target: 0 }
+  // Add more edges as needed
+];
+
+export default function Map() {
+  const [map, setMap] = useState(null);
+  const [showEdges, setShowEdges] = useState(true); // State variable to toggle edges
+
+  // Define a functional component to render dynamic markers
+  function DynamicMarkers() {
+    // Define an array of marker positions
+
+    function createIcon(color, size) {
+      return L.divIcon({
+        className: "custom-div-icon",
+        html: `
     <svg xmlns='http://www.w3.org/2000/svg'
       width='${size}'
       height='${size}'
@@ -42,75 +65,148 @@ function DynamicMarkers() {
         r='10'
       />
     </svg>`,
-      iconSize: [size, size],
-      iconAnchor: [size / 2, size / 2],
-      popupAnchor: [-3, -76],
-    });
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2],
+        popupAnchor: [0, -size / 2],
+      });
+    }
+
+    const color = "#ef42f5";
+
+    // Holding state of which marker is selected
+    const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
+    const markerRefs = useRef([]); // To store marker references
+
+    // Function to handle marker click
+    const handleMarkerClick = (index) => {
+      if (selectedMarkerIndex === index) {
+        setSelectedMarkerIndex(null);
+      } else {
+        setSelectedMarkerIndex(index);
+      }
+    };
+
+    const [zoomLevel, setZoomLevel] = useState(9);
+
+    const handleZoomEnd = () => {
+      setZoomLevel(map.getZoom());
+    };
+
+    useEffect(() => {
+      if (map) {
+        map.on("zoomend", handleZoomEnd);
+      }
+
+      return () => {
+        if (map) {
+          map.off("zoomend", handleZoomEnd);
+        }
+      };
+    }, [map]);
+
+    useEffect(() => {
+      if (selectedMarkerIndex !== null && markerRefs.current[selectedMarkerIndex]) {
+        markerRefs.current[selectedMarkerIndex].openPopup();
+      }
+      // Close other popups
+      markerRefs.current.forEach((marker, index) => {
+        if (index !== selectedMarkerIndex && marker) {
+          marker.closePopup();
+        }
+      });
+    }, [selectedMarkerIndex]);
+
+    // Create an array to store dynamic markers
+    const dynamicMarkers = nodes.map((node, index) => (
+      <Marker
+        key={node.id}
+        position={node.position} 
+        icon={createIcon(
+          color,
+          baseMarkerSize * Math.pow(2, zoomLevel - 9) * node.size
+        )}
+        eventHandlers={{
+          click: () => handleMarkerClick(index),
+        }}
+        opacity={selectedMarkerIndex === node.id ? 0.9 : 0.5}
+        ref={(el) => (markerRefs.current[index] = el)}
+      >
+        <Popup>
+          {node.name}
+        </Popup>
+      </Marker>
+    ));
+
+    return dynamicMarkers;
   }
 
-  const color = "#ef42f5";
-  const size = 30;
+  function DynamicEdges() {
+    const dynamicEdges = edges.map((edge, index) => (
+      <Polyline
+        weight={3}
+        key={index}
+        positions={[
+          nodes.find((node) => node.id === edge.source).position,
+          nodes.find((node) => node.id === edge.target).position,
+        ]}
+        color="#ef42f5"
+        opacity={0.5}
+      />
+    ));
 
-  // Create state to manage marker opacities
-  const [markerOpacities, setMarkerOpacities] = useState(Array(markerPositions.length).fill(0.5));
-
-  // Function to handle marker click
-  const handleMarkerClick = (index) => {
-    const updatedOpacities = [...markerOpacities];
-    updatedOpacities[index] = 0.9; // Change opacity to 0.9 for the clicked marker
-    setMarkerOpacities(updatedOpacities);
-  };
-
-  // Function to handle marker mouseout
-  const handleMarkerMouseOut = (index) => {
-    const updatedOpacities = [...markerOpacities];
-    updatedOpacities[index] = 0.5; // Change opacity back to 0.5 for the mouseout marker
-    setMarkerOpacities(updatedOpacities);
-  };
-
-  // Create an array to store dynamic markers
-  const dynamicMarkers = markerPositions.map((position, index) => (
-    <Marker
-      key={index}
-      position={position}
-      icon={createIcon(color, size)}
-      eventHandlers={{
-        click: () => handleMarkerClick(index),
-        mouseout: () => handleMarkerMouseOut(index),
-      }}
-      opacity={markerOpacities[index]}
-    >
-      {/* <Popup>ok. hello</Popup> */}
-    </Marker>
-  ));
-
-  return dynamicMarkers;
-}
-
-export default function Map() {
+    return dynamicEdges;
+  }
 
   return (
-    <MapContainer
-      center={[0, 0]}
-      minZoom={9}
-      zoom={9}
-      maxZoom={12}
-      attributionControl={false}
-      style={{ height: "100vh", width: "100%" }}
-      maxBounds={[
-        [-1, -1],
-        [1, 1],
-      ]} // Limit panning to these bounds
-      maxBoundsViscosity={0.95} // How solid the bounds are when user tries to pan outside
-    >
-      <ImageOverlay
-        url="se.svg"
-        bounds={[
+    <div>
+      <MapContainer
+        center={[0, 0]}
+        minZoom={9}
+        zoom={9}
+        maxZoom={12}
+        attributionControl={false}
+        style={{ height: "100vh", width: "100%" }}
+        maxBounds={[
           [-1, -1],
           [1, 1],
-        ]}
-      />
-      <DynamicMarkers />
-    </MapContainer>
+        ]} // Limit panning to these bounds
+        maxBoundsViscosity={0.95} // How solid the bounds are when user tries to pan outside
+        ref={setMap}
+      >
+        <ImageOverlay
+          url="se.svg"
+          bounds={[
+            [-1, -1],
+            [1, 1],
+          ]}
+        />
+        <DynamicMarkers />
+        {showEdges && <DynamicEdges />} {/* Conditionally render edges */}
+      </MapContainer>
+
+      {/* Toggle button */}
+      <button onClick={() => setShowEdges(!showEdges)} className="toggle-button">
+        {showEdges ? 'Hide Edges' : 'Show Edges'}
+      </button>
+
+      {/* Legends */}
+      <div className="legend">
+        <div className="legend-item">
+          <div
+            className="legend-icon"
+            style={{ backgroundColor: "#ef42f5", width: "20px", height: "20px", borderRadius: "50%" }}
+          ></div>
+          <div className="legend-label">University</div>
+        </div>
+        <div className="legend-item">
+          <div
+            className="legend-line"
+            style={{ backgroundColor: "#ef42f5", width: "40px", height: "2px" }}
+          ></div>
+          <div className="legend-label">Connections</div>
+        </div>
+        {/* Add more legend items as needed */}
+      </div>
+    </div>
   );
 }

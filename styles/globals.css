@@ -18,3 +18,85 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.leaflet-container {
+  background: rgba(255, 255, 255, 0.75) !important;
+}
+
+.leaflet-control-zoom {
+  padding: 5px 2px;
+  border: none !important;
+  clip-path: inset(1px 1px 1px 1px round 9999px);
+}
+
+.leaflet-control-zoom,
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  background: #ef42f5 !important;
+  color: white !important;
+}
+
+.legend {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.legend-icon, .legend-line {
+  margin-right: 8px;
+}
+
+.legend-label {
+  font-size: 14px;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+  background: lightgray;
+  border-radius: 12px;
+  color: #ff69b4;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 10px;
+}
+
+.custom-popup .leaflet-popup-tip-container {
+  width: 30px;
+  height: 15px;
+}
+
+.custom-popup .leaflet-popup-tip {
+  background: lightgray;
+}
+
+/* Add this CSS to your stylesheet or in a <style> tag in your JSX file */
+.toggle-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ffffff;
+  border: 2px solid #ef42f5;
+  color: #ef42f5;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.toggle-button:hover {
+  background-color: #ef42f5;
+  color: #ffffff;
+}
