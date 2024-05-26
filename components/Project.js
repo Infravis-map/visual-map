@@ -1,16 +1,54 @@
+import { useState } from "react"
 
 
-export default function Project(props) {
+export default function Project({title, institute, coordinator, firstImage}) {
+    const [image, setImage] = useState(firstImage)
+    const containerBorderRadius = image ? 0 : 10
+    const [showEdit, setShowEdit] = useState(false)
+
+    const changeImage = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            //setImage(e.target.files[0])
+            const reader = new FileReader()
+            reader.readAsDataURL(e.target.files[0])
+            reader.onload = () => {
+                console.log('called: ', reader.result)
+                const readFile = (reader.result).toString()
+                console.log(readFile.length)
+                setImage(readFile)
+            }
+            //console.log(e.target.files[0])
+        }
+    }
+
     return (
-        <div style={{width:"100%", padding:0,}}>
-            <div style={{padding:10, backgroundColor:"white", borderTopLeftRadius:10, borderTopRightRadius:10}}>
-                <h2 style={{margin:0}}>title</h2>
-                <h6 style={{margin:0, marginTop:5}}>Infravis Node:</h6>
-                <p style={{margin:0}}>KTH</p>
-                <h6 style={{margin:0, marginTop:5}}>Infravis Node Coordinator:</h6>
-                <p style={{margin:0}}>Mario</p>
+        <div style={{width:"100%", padding:0}} onClick={() => setShowEdit(!showEdit)}>
+            <div style={{padding:10, backgroundColor:"white", borderTopLeftRadius:10, borderTopRightRadius:10, borderBottomLeftRadius:containerBorderRadius, borderBottomRightRadius:containerBorderRadius}}>
+                <h2 style={{margin:0, marginBottom:7}}>{title}</h2>
+
+                {institute ? 
+                    <div>
+                        <h6 style={{margin:0, marginTop:5, color:"grey"}}>Institute:</h6>
+                        <p style={{margin:0}}>{institute}</p>
+                    </div>
+                : null}
+
+                {coordinator ? 
+                    <div>
+                        <h6 style={{margin:0, marginTop:5, color:"grey"}}>Infravis Node Coordinator:</h6>
+                        <p style={{margin:0}}>{coordinator}</p>
+                    </div>
+                : null}
+
+                 
+                <input type="file" accept="image/*"  name="image" style={{display:`${showEdit ? "block" : "none"}`}} onChange={(e) => changeImage(e)}></input>
+                
+                
             </div>
-            <div style={{ height: props.height, backgroundColor:"lightgray", borderBottomLeftRadius:10, borderBottomRightRadius:10}}></div>
+            {image ? 
+                <img src={image} style={{ width:"100%", maxHeight:"150px", objectFit:"cover", borderBottomLeftRadius:10, borderBottomRightRadius:10}}></img>
+            : null}
+            
         </div>
     )
 }
