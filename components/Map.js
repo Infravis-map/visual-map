@@ -158,7 +158,7 @@ export default function Map() {
   }
 
   return (
-    <div>
+    <div style={{position:"relative"}}>
       <MapContainer
         center={[0, 0]}
         minZoom={9}
