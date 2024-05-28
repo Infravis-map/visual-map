@@ -64,19 +64,23 @@ export default function Home() {
                     </div>
                     
                     <div className={styles.filterContainer} style={{maxHeight:filterHeight, marginBottom:filterMargin, marginTop:filterMargin, paddingTop:filterPadding, paddingBottom:filterPadding, overflowY:filterOverflow}} onTransitionEnd={() => setFilterOverflow("auto")}>
-                        <label>start date
+                        <label>Start date
                             <input type="date" max={enddate} id="startdate" name="startdate"/>
                         </label>
-                        <label>end date
+                        <label>End date
                             <input type="date" id="enddate" name="enddate" onChange={(e) => setEnddate(e.target.value)}/>
                         </label>
-                        <label>Priority
-                            <input type="number" className={styles.numberInput} min="1" max="3" id="priority" name="priority"/>
+                        <label>Level
+                            <select>
+                                <option key="any" value="">Any</option>
+                                <option key="mid" value="1">Mid-Level</option>
+                                <option key="in-depth" value="2">In-Depth</option>
+                            </select>
                         </label>
-                        <label>min hours
+                        <label>Min hours
                             <input type="number" className={styles.numberInput} min="0" id="minhours" name="minhours" value={minHours} onChange={(e) => setMinHours(e.target.value)} />
                         </label>
-                        <label>max hours
+                        <label>Max hours
                             <input type="number" className={styles.numberInput} min={minHours} id="maxhours" name="maxhours"/>
                         </label>
                         <label>Umeå University (UmU)
