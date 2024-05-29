@@ -14,7 +14,7 @@ export default function InputPage() {
     const [users, setUsers] = useState("")
     const [institute, setInstitute] = useState(null)
     const [hours, setHours] = useState("")
-    const [priority, setPriority] = useState("")
+    const [level, setLevel] = useState("")
     const [link, setLink] = useState("")
     const [keywords, setKeywords] = useState("")
     const [image, setImage] = useState(null)
@@ -120,9 +120,9 @@ export default function InputPage() {
                     </label>
                 </div>
                 <label>
-                    Priority of project
-                    <p>input a number 1 to 3</p>
-                    <input type="number" min="1" max="3" value={priority} name="priority" onChange={(e) => setPriority(e.target.value)}></input>
+                    Level of project
+                    <p>input a number 1 to 4</p>
+                    <input type="number" min="1" max="4" value={level} name="level" onChange={(e) => setLevel(e.target.value)}></input>
                 </label>
                 <label>
                     Link to project on InfraVis website

@@ -24,10 +24,11 @@ export default function Home() {
     ])
     const [enddate, setEnddate] = useState(null)
     const [minHours, setMinHours] = useState(0)
+    const [level, setLevel] = useState(null)
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(`search: ${search}\nfilter: priority: "${e.target.priority.value}"\nstartdate: "${e.target.startdate.value}" enddate: "${e.target.enddate.value}"\nminhours: "${e.target.minhours.value}" maxhours: "${e.target.maxhours.value}"\numu:${e.target.umu.checked} mium:${e.target.mium.checked} uu:${e.target.uu.checked} kth:${e.target.kth.checked} liu:${e.target.liu.checked} chalmers:${e.target.chalmers.checked} ugot:${e.target.ugot.checked} lnu:${e.target.lnu.checked} lu:${e.target.lu.checked}`)
+        console.log(`search: ${search}\nfilter: level: "${e.target.level.value}"\nstartdate: "${e.target.startdate.value}" enddate: "${e.target.enddate.value}"\nminhours: "${e.target.minhours.value}" maxhours: "${e.target.maxhours.value}"\numu:${e.target.umu.checked} mium:${e.target.mium.checked} uu:${e.target.uu.checked} kth:${e.target.kth.checked} liu:${e.target.liu.checked} chalmers:${e.target.chalmers.checked} ugot:${e.target.ugot.checked} lnu:${e.target.lnu.checked} lu:${e.target.lu.checked}`)
     }
 
     const handleFilter = () => {
@@ -71,11 +72,7 @@ export default function Home() {
                             <input type="date" id="enddate" name="enddate" onChange={(e) => setEnddate(e.target.value)}/>
                         </label>
                         <label>Level
-                            <select>
-                                <option key="any" value="">Any</option>
-                                <option key="mid" value="1">Mid-Level</option>
-                                <option key="in-depth" value="2">In-Depth</option>
-                            </select>
+                        <input type="number" min="1" max="4" id="level" name="level" value={level} onChange={(e) => setLevel(e.target.value)} />
                         </label>
                         <label>Min hours
                             <input type="number" className={styles.numberInput} min="0" id="minhours" name="minhours" value={minHours} onChange={(e) => setMinHours(e.target.value)} />
