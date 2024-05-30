@@ -5,6 +5,17 @@ export default function Project({title, institute, coordinator, firstImage}) {
     const [image, setImage] = useState(firstImage)
     const containerBorderRadius = image ? 0 : 10
     const [showEdit, setShowEdit] = useState(false)
+    const instituteOptions = [
+        "Umeå University (UmU)", 
+        "Mid Sweden University (MIUM)",
+        "Uppsala University (UU)",
+        "KTH Stockholm (KTH)",
+        "Linköping University (LiU)",
+        "Chalmers",
+        "Gothenburg University (UGot)",
+        "Linnaeus University (LNU)",
+        "Lund University (LU)",
+    ];
 
     const changeImage = (e) => {
         if (e.target.files && e.target.files[0]) {
@@ -26,10 +37,10 @@ export default function Project({title, institute, coordinator, firstImage}) {
             <div style={{padding:10, backgroundColor:"white", borderTopLeftRadius:10, borderTopRightRadius:10, borderBottomLeftRadius:containerBorderRadius, borderBottomRightRadius:containerBorderRadius}}>
                 <h2 style={{margin:0, marginBottom:7}}>{title}</h2>
 
-                {institute ? 
+                {(institute != null && institute >= 0 && institute < instituteOptions.length) ? 
                     <div>
                         <h6 style={{margin:0, marginTop:5, color:"grey"}}>Institute:</h6>
-                        <p style={{margin:0}}>{institute}</p>
+                        <p style={{margin:0}}>{instituteOptions[institute]}</p>
                     </div>
                 : null}
 
