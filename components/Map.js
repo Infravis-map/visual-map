@@ -242,7 +242,7 @@ export default function Map({ projects }) {
         zoom={9}
         maxZoom={12}
         attributionControl={false}
-        style={{ height: "100vh", width: "100%" }}
+        style={{ height: "90vh", width: "100%" }}
         maxBounds={[
           [-1, -1],
           [1, 1],
