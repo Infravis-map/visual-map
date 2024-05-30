@@ -7,56 +7,19 @@ import {
   Polyline,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { max } from "d3";
 
-const baseMarkerSize = 40;
+const baseMarkerSize = 30;
 
 const nodes = [
-  { id: 0, name: "Umeå University", position: [0.14, 0.14], size: 1.0, num: 0 },
-  { id: 1, name: "Mid Sweden University", position: [0, 0], size: 1.0, num: 0 },
-  {
-    id: 2,
-    name: "Uppsala University",
-    position: [-0.355, 0.01],
-    size: 0.7,
-    num: 0,
-  },
-  {
-    id: 3,
-    name: "KTH Stockholm (KTH)",
-    position: [-0.425, 0.023],
-    size: 1.0,
-    num: 0,
-  },
-  {
-    id: 4,
-    name: "Linköpings University",
-    position: [-0.525, -0.1],
-    size: 0.8,
-    num: 0,
-  },
-  {
-    id: 5,
-    name: "Chalmers / Gothenburg University",
-    position: [-0.62, -0.34],
-    size: 1.0,
-    num: 0,
-  },
-  { id: 6, name: "", position: [-0.62, -0.34], size: 0.0, num: 0 },
-  {
-    id: 7,
-    name: "Linnaeus University (LNU)",
-    position: [-0.77, -0.12],
-    size: 1.0,
-    num: 0,
-  },
-  {
-    id: 8,
-    name: "Lund University",
-    position: [-0.86, -0.25],
-    size: 1.0,
-    num: 0,
-  },
+  { id: 0, name: "Umeå University", position: [0.14, 0.14], size: 1.0 },
+  { id: 1, name: "Mid Sweden University", position: [0, 0], size: 1.0 },
+  { id: 2, name: "Uppsala University", position: [-0.355, 0.01], size: 0.7 },
+  { id: 3, name: "KTH Stockholm", position: [-0.425, 0.023], size: 1.0 },
+  { id: 4, name: "Linköpings University", position: [-0.525, -0.1], size: 0.8 },
+  { id: 5, name: "Chalmers / Gothenburg University", position: [-0.62, -0.34], size: 1.0 },
+  { id: 6, name: "", position: [-0.62, -0.34], size: 0.0 },
+  { id: 7, name: "Linnaeus University", position: [-0.77, -0.12], size: 1.0 },
+  { id: 8, name: "Lund University", position: [-0.86, -0.25], size: 1.0 },
   // Add more nodes as needed
 ];
 
@@ -68,53 +31,17 @@ const edges = [
   { source: 4, target: 5 },
   { source: 5, target: 6 },
   { source: 6, target: 7 },
-  { source: 7, target: 8 },
-  { source: 8, target: 0 }
+  { source: 7, target: 0 },
+  { source: 0, target: 2 },
+  { source: 2, target: 4 },
+  { source: 4, target: 6 },
+  { source: 6, target: 0 }
+  // Add more edges as needed
 ];
 
-export default function Map({ projects }) {
+export default function Map() {
   const [map, setMap] = useState(null);
   const [showEdges, setShowEdges] = useState(true); // State variable to toggle edges
-
-  GetNumInstitues();
-
-  function GetNumInstitues() {
-    // gets a number for how many projects per institute
-    for (let i = 0; i < projects.length; i++) {
-      nodes[projects[i].institute_id].num++;
-    }
-
-    for (let i = 0; i < nodes.length; i++) {
-      if (i == 5) {
-        nodes[i].size = getLogMappedValue(nodes[i].num + nodes[i+1].num, 1, 10);
-      } else if (i == 6) {
-        nodes[i].size = 0;
-      } else {
-        nodes[i].size = getLogMappedValue(nodes[i].num, 1, 10);
-      }
-    }
-  }
-
-  function getLogMappedValue(input, minInput, maxInput) {
-    const minOutput = 0.3;
-    const maxOutput = 1.0;
-
-    // Ensure input is within the specified range
-    if (input < minInput) input = minInput;
-    if (input > maxInput) input = maxInput;
-
-    const logMinInput = Math.log(minInput + 1);
-    const logMaxInput = Math.log(maxInput + 1);
-    const logInput = Math.log(input + 1);
-
-    // Map the logarithmic value to the output range
-    const mappedValue =
-      minOutput +
-      ((logInput - logMinInput) / (logMaxInput - logMinInput)) *
-        (maxOutput - minOutput);
-
-    return mappedValue;
-  }
 
   // Define a functional component to render dynamic markers
   function DynamicMarkers() {
@@ -155,7 +82,6 @@ export default function Map({ projects }) {
       if (selectedMarkerIndex === index) {
         setSelectedMarkerIndex(null);
       } else {
-        // console.log(getLogMappedValue(12, 1, 15));
         setSelectedMarkerIndex(index);
       }
     };
@@ -179,10 +105,7 @@ export default function Map({ projects }) {
     }, [map]);
 
     useEffect(() => {
-      if (
-        selectedMarkerIndex !== null &&
-        markerRefs.current[selectedMarkerIndex]
-      ) {
+      if (selectedMarkerIndex !== null && markerRefs.current[selectedMarkerIndex]) {
         markerRefs.current[selectedMarkerIndex].openPopup();
       }
       // Close other popups
@@ -197,7 +120,7 @@ export default function Map({ projects }) {
     const dynamicMarkers = nodes.map((node, index) => (
       <Marker
         key={node.id}
-        position={node.position}
+        position={node.position} 
         icon={createIcon(
           color,
           baseMarkerSize * Math.pow(2, zoomLevel - 9) * node.size
@@ -208,7 +131,9 @@ export default function Map({ projects }) {
         opacity={selectedMarkerIndex === node.id ? 0.9 : 0.5}
         ref={(el) => (markerRefs.current[index] = el)}
       >
-        <Popup>{node.name}</Popup>
+        <Popup>
+          {node.name}
+        </Popup>
       </Marker>
     ));
 
@@ -233,7 +158,7 @@ export default function Map({ projects }) {
   }
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{position:"relative"}}>
       <MapContainer
         center={[0, 0]}
         minZoom={9}
@@ -260,11 +185,8 @@ export default function Map({ projects }) {
       </MapContainer>
 
       {/* Toggle button */}
-      <button
-        onClick={() => setShowEdges(!showEdges)}
-        className="toggle-button"
-      >
-        {showEdges ? "Hide Edges" : "Show Edges"}
+      <button onClick={() => setShowEdges(!showEdges)} className="toggle-button">
+        {showEdges ? 'Hide Edges' : 'Show Edges'}
       </button>
 
       {/* Legends */}
@@ -272,12 +194,7 @@ export default function Map({ projects }) {
         <div className="legend-item">
           <div
             className="legend-icon"
-            style={{
-              backgroundColor: "#ef42f5",
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
-            }}
+            style={{ backgroundColor: "#ef42f5", width: "20px", height: "20px", borderRadius: "50%" }}
           ></div>
           <div className="legend-label">University</div>
         </div>
