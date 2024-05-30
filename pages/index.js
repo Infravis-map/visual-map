@@ -39,7 +39,7 @@ export default function Home() {
     //style
     const filterMargin = showFilter ? 20 : 7.5
     const filterPadding = showFilter ? 20 : 0
-    const filterHeight = showFilter ? "300px" : "0px"
+    const filterHeight = showFilter ? "350px" : "0px"
     const filterColor = showFilter ? "#DE1690" : "grey"
 
     const [filterOverflow, setFilterOverflow] = useState("auto")
