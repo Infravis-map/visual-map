@@ -58,7 +58,7 @@ COPY --from=builder /app/visual-map/.next/static ./.next/static
 # Change ownership of .next directory to nextjs user
 COPY --from=builder /app/visual-map/.next ./.next
 
-
+RUN chmod -R 755 /app/visual-map/.next
 RUN chown -R nextjs:nodejs /app/visual-map/.next
 
 # RUN chown -R nextjs:nodejs /app/visual-map/.next/cache
@@ -71,6 +71,6 @@ ENV PORT 3000
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-# CMD HOSTNAME="0.0.0.0" node server.js
+CMD HOSTNAME="0.0.0.0" node server.js
 # CMD chown -R nextjs:nodejs /app/visual-map/.next && HOSTNAME="0.0.0.0" node server.js
-CMD ls -l && pwd && HOSTNAME="0.0.0.0" node server.js
+# CMD ls -l -a /app/visual-map/.next && HOSTNAME="0.0.0.0" node server.js
