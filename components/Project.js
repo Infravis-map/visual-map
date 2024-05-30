@@ -1,20 +1,20 @@
 import { useState } from "react"
 
 
-export default function Project({title, institute, coordinator, firstImage}) {
+export default function Project({title, institute, coordinator, firstImage, link}) {
     const [image, setImage] = useState(firstImage)
     const containerBorderRadius = image ? 0 : 10
-    const [showEdit, setShowEdit] = useState(false)
+    const [showEdit, setShowEdit] = useState(true)
     const instituteOptions = [
-        "Umeå University (UmU)", 
-        "Mid Sweden University (MIUM)",
-        "Uppsala University (UU)",
-        "KTH Stockholm (KTH)",
-        "Linköping University (LiU)",
-        "Chalmers",
-        "Gothenburg University (UGot)",
-        "Linnaeus University (LNU)",
-        "Lund University (LU)",
+        "Umeå University (UmU)",        // 0
+        "Mid Sweden University (MIUM)", // 1
+        "Uppsala University (UU)",      // 2
+        "KTH Stockholm (KTH)",          // 3
+        "Linköping University (LiU)",   // 4
+        "Chalmers",                     // 5
+        "Gothenburg University (UGot)", // 6
+        "Linnaeus University (LNU)",    // 7
+        "Lund University (LU)",         // 8
     ];
 
     const changeImage = (e) => {
@@ -33,7 +33,7 @@ export default function Project({title, institute, coordinator, firstImage}) {
     }
 
     return (
-        <div style={{width:"100%", padding:0}} onClick={() => setShowEdit(!showEdit)}>
+        <a style={{display: "table-cell"}} href={link} target="_blank" onClick={() => setShowEdit(false)}>
             <div style={{padding:10, backgroundColor:"white", borderTopLeftRadius:10, borderTopRightRadius:10, borderBottomLeftRadius:containerBorderRadius, borderBottomRightRadius:containerBorderRadius}}>
                 <h2 style={{margin:0, marginBottom:7}}>{title}</h2>
 
@@ -59,7 +59,6 @@ export default function Project({title, institute, coordinator, firstImage}) {
             {image ? 
                 <img src={image} style={{ width:"100%", maxHeight:"150px", objectFit:"cover", borderBottomLeftRadius:10, borderBottomRightRadius:10}}></img>
             : null}
-            
-        </div>
+        </a>
     )
 }

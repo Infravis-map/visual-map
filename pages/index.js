@@ -10,17 +10,17 @@ export default function Home() {
     const [search, setSearch] = useState("")
     const [showFilter, setShowFilter] = useState(false)
     const [projects, setProjects] = useState([
-        {title:"Interesting title", institute_id: 3, coordinator:"Mario", image:null},
-        {title:"Test title", institute_id: 3, coordinator:"", image:null},
-        {title:"How stuff is visualized in a long title", institute_id: 0, coordinator:"Mario", image:null},
-        {title:"Study in Visualization", institute_id: 3, coordinator:"Mario", image:null},
-        {title:"Visualizing title", institute_id: 7, coordinator:"Mario", image:null},
-        {title:"Vizualizing visuals", institute_id: 3, coordinator:"Mario", image:null},
-        {title:"testing visuals", institute_id: 3, coordinator:"Mario", image:null},
-        {title:"Title test", institute_id: 3, coordinator:"Mario", image:null},
-        {title:"Title test", institute_id: 3, coordinator:"Mario", image:null},
-        {title:"Title test", institute_id: 3, coordinator:"Mario", image:null},
-        {title:"Title test", institute_id: 3, coordinator:"Mario", image:null},
+        {title:"Visualizing Buzz Pollination", institute_id: 3, coordinator:"Mario Romero Vega", image:null, link: "https://infravis.se/visualizing-buzz-pollination/"},
+        {title:"SEAD Conservation Paleobiology", institute_id: 0, coordinator:"Roger Mähler", image:null, link: null},
+        {title:"Producing And Rendering A 3D Mesh Of Cassida Viridis – Green Tortoise Beetle", institute_id: null, coordinator:"Mario Romero Vega", image:null, link: "https://infravis.se/producing-and-rendering-a-3d-mesh-of-cassida-viridis-green-tortoise-beetle/"},
+        {title:"Butterflies In Virtual Reality: Developing Workflows For Efficient Morphological Segmentation And Analysis Of X-Ray Microtomography Datasets", institute_id: 8, coordinator:"Anders Sjöström", image:null, link: null},
+        {title:"Visualizing title", institute_id: 7, coordinator:"Mario", image:null, link: null},
+        {title:"Vizualizing visuals", institute_id: 3, coordinator:"Mario", image:null, link: null},
+        {title:"testing visuals", institute_id: 3, coordinator:"Mario", image:null, link: null},
+        {title:"Title test", institute_id: 3, coordinator:"Mario", image:null, link: null},
+        {title:"Title test", institute_id: 3, coordinator:"Mario", image:null, link: null},
+        {title:"Title test", institute_id: 3, coordinator:"Mario", image:null, link: null},
+        {title:"Title test", institute_id: 3, coordinator:"Mario", image:null, link: null},
     ])
     const [enddate, setEnddate] = useState(null)
     const [minHours, setMinHours] = useState(0)
@@ -117,6 +117,7 @@ export default function Home() {
                             institute={project.institute_id}
                             coordinator={project.coordinator}
                             firstImage={project.image}
+                            link={project.link}
                             key={project.title + project.nodes + project.coordinator}
                         />
                     ))}

@@ -81,7 +81,9 @@ export default function Map({ projects }) {
   function GetNumInstitues() {
     // gets a number for how many projects per institute
     for (let i = 0; i < projects.length; i++) {
-      nodes[projects[i].institute_id].num++;
+      if (nodes[projects[i].institute_id] != null) {
+        nodes[projects[i].institute_id].num++;
+      }
     }
 
     for (let i = 0; i < nodes.length; i++) {
