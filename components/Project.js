@@ -33,7 +33,7 @@ export default function Project({title, institute, coordinator, firstImage, link
     }
 
     return (
-        <a style={{display: "table-cell"}} href={link} target="_blank" onClick={() => setShowEdit(false)}>
+        <a href={link} target="_blank" onClick={() => setShowEdit(false)}>
             <div style={{padding:10, backgroundColor:"white", borderTopLeftRadius:10, borderTopRightRadius:10, borderBottomLeftRadius:containerBorderRadius, borderBottomRightRadius:containerBorderRadius}}>
                 <h2 style={{margin:0, marginBottom:7}}>{title}</h2>
 
