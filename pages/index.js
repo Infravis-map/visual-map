@@ -10,17 +10,17 @@ export default function Home() {
     const [search, setSearch] = useState("")
     const [showFilter, setShowFilter] = useState(false)
     const [projects, setProjects] = useState([
-        {title:"Interesting title", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
-        {title:"Test title", institute:"KTH Stockholm (KTH)", coordinator:"", image:null},
-        {title:"How stuff is visualized in a long title", institute:null, coordinator:"Mario", image:null},
-        {title:"Study in Visualization", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
-        {title:"Visualizing title", institute:"Linnaeus University (LNU)", coordinator:"Mario", image:null},
-        {title:"Vizualizing visuals", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
-        {title:"testing visuals", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
-        {title:"Title test", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
-        {title:"Title test", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
-        {title:"Title test", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
-        {title:"Title test", institute:"KTH Stockholm (KTH)", coordinator:"Mario", image:null},
+        {title:"Interesting title", institute:"KTH Stockholm (KTH)", institute_id: 3, coordinator:"Mario", image:null},
+        {title:"Test title", institute:"KTH Stockholm (KTH)", institute_id: 3, coordinator:"", image:null},
+        {title:"How stuff is visualized in a long title", institute:"Umeå University", institute_id: 0, coordinator:"Mario", image:null},
+        {title:"Study in Visualization", institute:"KTH Stockholm (KTH)", institute_id: 3, coordinator:"Mario", image:null},
+        {title:"Visualizing title", institute:"Linnaeus University (LNU)", institute_id: 7, coordinator:"Mario", image:null},
+        {title:"Vizualizing visuals", institute:"KTH Stockholm (KTH)", institute_id: 3, coordinator:"Mario", image:null},
+        {title:"testing visuals", institute:"KTH Stockholm (KTH)", institute_id: 3, coordinator:"Mario", image:null},
+        {title:"Title test", institute:"KTH Stockholm (KTH)", institute_id: 3, coordinator:"Mario", image:null},
+        {title:"Title test", institute:"KTH Stockholm (KTH)", institute_id: 3, coordinator:"Mario", image:null},
+        {title:"Title test", institute:"KTH Stockholm (KTH)", institute_id: 3, coordinator:"Mario", image:null},
+        {title:"Title test", institute:"KTH Stockholm (KTH)", institute_id: 3, coordinator:"Mario", image:null},
     ])
     const [enddate, setEnddate] = useState(null)
     const [minHours, setMinHours] = useState(0)
