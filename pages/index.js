@@ -132,7 +132,7 @@ export default function Home() {
 
             <div ref={mapRef}>
                 {/* <D3Example width="200" height="200" /> */}
-                <Map/>
+                <Map projects={projects}/>
             </div>
         </div>
     );
