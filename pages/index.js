@@ -11,9 +11,9 @@ export default function Home() {
     const [showFilter, setShowFilter] = useState(false)
     const [projects, setProjects] = useState([
         {title:"Visualizing Buzz Pollination", institute_id: 3, coordinator:"Mario Romero Vega", image:null, link: "https://infravis.se/visualizing-buzz-pollination/"},
-        {title:"SEAD Conservation Paleobiology", institute_id: 0, coordinator:"Roger Mähler", image:null, link: null},
+        {title:"SEAD Conservation Paleobiology", institute_id: 0, coordinator:"Roger Mähler", image:null, link: "https://infravis.se/sead-conservation-paleobiology/"},
         {title:"Producing And Rendering A 3D Mesh Of Cassida Viridis – Green Tortoise Beetle", institute_id: null, coordinator:"Mario Romero Vega", image:null, link: "https://infravis.se/producing-and-rendering-a-3d-mesh-of-cassida-viridis-green-tortoise-beetle/"},
-        {title:"Butterflies In Virtual Reality: Developing Workflows For Efficient Morphological Segmentation And Analysis Of X-Ray Microtomography Datasets", institute_id: 8, coordinator:"Anders Sjöström", image:null, link: null},
+        {title:"Butterflies In Virtual Reality: Developing Workflows For Efficient Morphological Segmentation And Analysis Of X-Ray Microtomography Datasets", institute_id: 8, coordinator:"Anders Sjöström", image:null, link: "https://infravis.se/butterflies-in-virtual-reality-developing-workflows-for-efficient-morphological-segmentation-and-analysis-of-microct-scans-lu/"},
         {title:"Visualizing title", institute_id: 7, coordinator:"Mario", image:null, link: null},
         {title:"Vizualizing visuals", institute_id: 3, coordinator:"Mario", image:null, link: null},
         {title:"testing visuals", institute_id: 3, coordinator:"Mario", image:null, link: null},
