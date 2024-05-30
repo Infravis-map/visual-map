@@ -9,7 +9,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import { max } from "d3";
 
-const baseMarkerSize = 30;
+const baseMarkerSize = 40;
 
 const nodes = [
   { id: 0, name: "Umeå University", position: [0.14, 0.14], size: 1.0, num: 0 },
@@ -76,17 +76,23 @@ export default function Map({ projects }) {
   const [map, setMap] = useState(null);
   const [showEdges, setShowEdges] = useState(true); // State variable to toggle edges
 
+  GetNumInstitues();
+
   function GetNumInstitues() {
     // gets a number for how many projects per institute
     for (let i = 0; i < projects.length; i++) {
-      nodes[projects[i].institute_i].num++;
+      nodes[projects[i].institute_id].num++;
     }
 
     for (let i = 0; i < nodes.length; i++) {
-      nodes[i].size = getLogMappedValue(nodes[i].num, 1, 15);
+      if (i == 5) {
+        nodes[i].size = getLogMappedValue(nodes[i].num + nodes[i+1].num, 1, 10);
+      } else if (i == 6) {
+        nodes[i].size = 0;
+      } else {
+        nodes[i].size = getLogMappedValue(nodes[i].num, 1, 10);
+      }
     }
-
-    
   }
 
   function getLogMappedValue(input, minInput, maxInput) {
