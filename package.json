@@ -2,18 +2,29 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build"
+    "build": "next build",
+    "start": "node server.js"
   },
   "dependencies": {
     "d3": "^7.9.0",
-    "next": "latest",
+    "isomorphic-unfetch": "^4.0.2",
+    "leaflet": "^1.9.4",
+    "next": "^14.2.3",
+    "node-fetch": "^3.3.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1",
+    "topojson": "^3.0.2"
   },
   "name": "nextjs-docker",
   "description": "This examples shows how to use Docker with Next.js based on the [deployment documentation](https://nextjs.org/docs/deployment#docker-image). Additionally, it contains instructions for deploying to Google Cloud Run. However, you can use any container-based deployment host.",
   "version": "1.0.0",
-  "main": "next.config.js",
+  "main": "server.js",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3"
+  }
 }
