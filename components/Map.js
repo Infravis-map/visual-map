@@ -80,19 +80,24 @@ export default function Map({ projects }) {
 
   function GetNumInstitues() {
     // gets a number for how many projects per institute
+    if (projects == null) {
+      console.log("No projects");
+      return;
+    }
     for (let i = 0; i < projects.length; i++) {
-      if (nodes[projects[i].institute_id] != null) {
-        nodes[projects[i].institute_id].num++;
+      if (nodes[projects[i].Institute_id] != null) {
+        console.log(projects[i].Institute_id);
+        nodes[projects[i].Institute_id].num++;
       }
     }
 
     for (let i = 0; i < nodes.length; i++) {
       if (i == 5) {
-        nodes[i].size = getLogMappedValue(nodes[i].num + nodes[i+1].num, 1, 10);
+        nodes[i].size = getLogMappedValue(nodes[i].num + nodes[i+1].num, 1, 5);
       } else if (i == 6) {
         nodes[i].size = 0;
       } else {
-        nodes[i].size = getLogMappedValue(nodes[i].num, 1, 10);
+        nodes[i].size = getLogMappedValue(nodes[i].num, 1, 5);
       }
     }
   }
