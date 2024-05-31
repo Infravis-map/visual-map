@@ -6,7 +6,7 @@ import fetch from "isomorphic-unfetch";
 
 export async function getStaticProps() {
   try {
-    const res = await fetch("http://localhost:8080/filter");
+    const res = await fetch("http://app:8080/filter");
 
     const data = await res.json();
 
