@@ -3,28 +3,50 @@ import styles from "../styles/Home.module.css";
 import Project from '../components/Project'
 import { useState, useRef } from "react"
 import dynamic from 'next/dynamic'
+import fetch from "isomorphic-unfetch";
 
 const Map = dynamic(() => import('../components/Map.js'), { ssr: false });
 
-export default function Home() {
+export async function getServerSideProps() { // Change to getServerSideProps to run on each request
+    try {
+        const res = await fetch("http://localhost:8080/filter");
+        const data = await res.json();
+        return {
+            props: {
+                projects: data,
+            }
+        };
+    } catch (error) {
+        console.error(error);
+        return {
+            props: {
+                projects: [],
+            }
+        };
+    }
+}
+
+export default function Home( {projects} ) {
     const [search, setSearch] = useState("")
     const [showFilter, setShowFilter] = useState(false)
-    const [projects, setProjects] = useState([
-        {title:"Visualizing Buzz Pollination", institute_id: 3, coordinator:"Mario Romero Vega", image:null, link: "https://infravis.se/visualizing-buzz-pollination/"},
-        {title:"SEAD Conservation Paleobiology", institute_id: 0, coordinator:"Roger Mähler", image:null, link: "https://infravis.se/sead-conservation-paleobiology/"},
-        {title:"Producing And Rendering A 3D Mesh Of Cassida Viridis – Green Tortoise Beetle", institute_id: null, coordinator:"Mario Romero Vega", image:null, link: "https://infravis.se/producing-and-rendering-a-3d-mesh-of-cassida-viridis-green-tortoise-beetle/"},
-        {title:"Butterflies In Virtual Reality: Developing Workflows For Efficient Morphological Segmentation And Analysis Of X-Ray Microtomography Datasets", institute_id: 8, coordinator:"Anders Sjöström", image:null, link: "https://infravis.se/butterflies-in-virtual-reality-developing-workflows-for-efficient-morphological-segmentation-and-analysis-of-microct-scans-lu/"},
-        {title:"Visualizing title", institute_id: 7, coordinator:"Mario", image:null, link: null},
-        {title:"Vizualizing visuals", institute_id: 3, coordinator:"Mario", image:null, link: null},
-        {title:"testing visuals", institute_id: 3, coordinator:"Mario", image:null, link: null},
-        {title:"Title test", institute_id: 3, coordinator:"Mario", image:null, link: null},
-        {title:"Title test", institute_id: 3, coordinator:"Mario", image:null, link: null},
-        {title:"Title test", institute_id: 3, coordinator:"Mario", image:null, link: null},
-        {title:"Title test", institute_id: 3, coordinator:"Mario", image:null, link: null},
-    ])
+    // const [projects, setProjects] = useState([
+    //     {title:"Visualizing Buzz Pollination", institute_id: 3, coordinator:"Mario Romero Vega", image:null, link: "https://infravis.se/visualizing-buzz-pollination/"},
+    //     {title:"SEAD Conservation Paleobiology", institute_id: 0, coordinator:"Roger Mähler", image:null, link: "https://infravis.se/sead-conservation-paleobiology/"},
+    //     {title:"Producing And Rendering A 3D Mesh Of Cassida Viridis – Green Tortoise Beetle", institute_id: null, coordinator:"Mario Romero Vega", image:null, link: "https://infravis.se/producing-and-rendering-a-3d-mesh-of-cassida-viridis-green-tortoise-beetle/"},
+    //     {title:"Butterflies In Virtual Reality: Developing Workflows For Efficient Morphological Segmentation And Analysis Of X-Ray Microtomography Datasets", institute_id: 8, coordinator:"Anders Sjöström", image:null, link: "https://infravis.se/butterflies-in-virtual-reality-developing-workflows-for-efficient-morphological-segmentation-and-analysis-of-microct-scans-lu/"},
+    //     {title:"Visualizing title", institute_id: 7, coordinator:"Mario", image:null, link: null},
+    //     {title:"Vizualizing visuals", institute_id: 3, coordinator:"Mario", image:null, link: null},
+    //     {title:"testing visuals", institute_id: 3, coordinator:"Mario", image:null, link: null},
+    //     {title:"Title test", institute_id: 3, coordinator:"Mario", image:null, link: null},
+    //     {title:"Title test", institute_id: 3, coordinator:"Mario", image:null, link: null},
+    //     {title:"Title test", institute_id: 3, coordinator:"Mario", image:null, link: null},
+    //     {title:"Title test", institute_id: 3, coordinator:"Mario", image:null, link: null},
+    // ])
     const [enddate, setEnddate] = useState(null)
     const [minHours, setMinHours] = useState(0)
     const [level, setLevel] = useState(null)
+
+    console.log(projects)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -113,12 +135,12 @@ export default function Home() {
                 <div className={styles.projectContainer}>
                     {projects.map(project => (
                         <Project 
-                            title={project.title}
-                            institute={project.institute_id}
-                            coordinator={project.coordinator}
+                            title={project.Title}
+                            institute={project.Institute_id - 1}
+                            coordinator={project.user}
                             firstImage={project.image}
-                            link={project.link}
-                            key={project.title + project.nodes + project.coordinator}
+                            link={project.URL}
+                            key={project.Title + project.nodes + project.coordinator}
                         />
                     ))}
                 </div>
