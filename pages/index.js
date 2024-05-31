@@ -26,9 +26,10 @@ export async function getServerSideProps() { // Change to getServerSideProps to 
     }
 }
 
-export default function Home( {projects} ) {
+export default function Home( {projects: initialProjects} ) {
     const [search, setSearch] = useState("")
     const [showFilter, setShowFilter] = useState(false)
+    const [projects, setProjects] = useState(initialProjects)
     // const [projects, setProjects] = useState([
     //     {title:"Visualizing Buzz Pollination", institute_id: 3, coordinator:"Mario Romero Vega", image:null, link: "https://infravis.se/visualizing-buzz-pollination/"},
     //     {title:"SEAD Conservation Paleobiology", institute_id: 0, coordinator:"Roger Mähler", image:null, link: "https://infravis.se/sead-conservation-paleobiology/"},
@@ -48,9 +49,41 @@ export default function Home( {projects} ) {
 
     console.log(projects)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(`search: ${search}\nfilter: level: "${e.target.level.value}"\nstartdate: "${e.target.startdate.value}" enddate: "${e.target.enddate.value}"\nminhours: "${e.target.minhours.value}" maxhours: "${e.target.maxhours.value}"\numu:${e.target.umu.checked} mium:${e.target.mium.checked} uu:${e.target.uu.checked} kth:${e.target.kth.checked} liu:${e.target.liu.checked} chalmers:${e.target.chalmers.checked} ugot:${e.target.ugot.checked} lnu:${e.target.lnu.checked} lu:${e.target.lu.checked}`)
+
+        const formData = {
+            search: e.target.search.value,
+            level: e.target.level.value,
+            startdate: e.target.startdate.value,
+            enddate: e.target.enddate.value,
+            minhours: e.target.minhours.value,
+            maxhours: e.target.maxhours.value,
+            umu: e.target.umu.checked,
+            mium: e.target.mium.checked,
+            uu: e.target.uu.checked,
+            kth: e.target.kth.checked,
+            liu: e.target.liu.checked,
+            chalmers: e.target.chalmers.checked,
+            ugot: e.target.ugot.checked,
+            lnu: e.target.lnu.checked,
+            lu: e.target.lu.checked
+        };
+
+        try {
+            const res = await fetch("http://localhost:8080/filter", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            });
+            const data = await res.json();
+            setProjects(data);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const handleFilter = () => {
@@ -136,8 +169,8 @@ export default function Home( {projects} ) {
                     {projects.map(project => (
                         <Project 
                             title={project.Title}
-                            institute={project.Institute_id - 1}
-                            coordinator={project.user}
+                            institute={project.Institute_id}
+                            coordinator={"hello"}
                             firstImage={project.image}
                             link={project.URL}
                             key={project.Title + project.nodes + project.coordinator}
