@@ -74,7 +74,7 @@ export default function Home( {projects: initialProjects} ) {
         console.log(formData);
 
         try {
-            const res = await fetch("/api/filter", {
+            const res = await fetch("http://localhost:8080/filter", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -82,12 +82,8 @@ export default function Home( {projects: initialProjects} ) {
                 body: JSON.stringify(formData)
             });
             const data = await res.json();
-
-            console.log(data);
-
             setProjects(data);
         } catch (error) {
-            console.log("dsadsadasdasdasdsd");
             console.error(error);
         }
     }
