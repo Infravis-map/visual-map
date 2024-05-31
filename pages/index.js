@@ -51,7 +51,7 @@ export default function Home( {projects: initialProjects} ) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(`search: ${search}\nfilter: level: "${e.target.level.value}"\nstartdate: "${e.target.startdate.value}" enddate: "${e.target.enddate.value}"\nminhours: "${e.target.minhours.value}" maxhours: "${e.target.maxhours.value}"\numu:${e.target.umu.checked} mium:${e.target.mium.checked} uu:${e.target.uu.checked} kth:${e.target.kth.checked} liu:${e.target.liu.checked} chalmers:${e.target.chalmers.checked} ugot:${e.target.ugot.checked} lnu:${e.target.lnu.checked} lu:${e.target.lu.checked}`)
+        // console.log(`search: ${search}\nfilter: level: "${e.target.level.value}"\nstartdate: "${e.target.startdate.value}" enddate: "${e.target.enddate.value}"\nminhours: "${e.target.minhours.value}" maxhours: "${e.target.maxhours.value}"\numu:${e.target.umu.checked} mium:${e.target.mium.checked} uu:${e.target.uu.checked} kth:${e.target.kth.checked} liu:${e.target.liu.checked} chalmers:${e.target.chalmers.checked} ugot:${e.target.ugot.checked} lnu:${e.target.lnu.checked} lu:${e.target.lu.checked}`)
 
         const formData = {
             search: e.target.search.value,
@@ -71,8 +71,10 @@ export default function Home( {projects: initialProjects} ) {
             lu: e.target.lu.checked
         };
 
+        console.log(formData);
+
         try {
-            const res = await fetch("http://localhost:8080/filter", {
+            const res = await fetch("/api/filter", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -80,8 +82,12 @@ export default function Home( {projects: initialProjects} ) {
                 body: JSON.stringify(formData)
             });
             const data = await res.json();
+
+            console.log(data);
+
             setProjects(data);
         } catch (error) {
+            console.log("dsadsadasdasdasdsd");
             console.error(error);
         }
     }
