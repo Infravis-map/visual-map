@@ -93,11 +93,11 @@ export default function Map({ projects }) {
 
     for (let i = 0; i < nodes.length; i++) {
       if (i == 5) {
-        nodes[i].size = getLogMappedValue(nodes[i].num + nodes[i+1].num, 1, 5);
+        nodes[i].size = getLogMappedValue(nodes[i].num + nodes[i+1].num, 1, 10);
       } else if (i == 6) {
         nodes[i].size = 0;
       } else {
-        nodes[i].size = getLogMappedValue(nodes[i].num, 1, 5);
+        nodes[i].size = getLogMappedValue(nodes[i].num, 1, 10);
       }
     }
   }
@@ -162,7 +162,7 @@ export default function Map({ projects }) {
       if (selectedMarkerIndex === index) {
         setSelectedMarkerIndex(null);
       } else {
-        // console.log(getLogMappedValue(12, 1, 15));
+        console.log("Marker clicked: ", index);
         setSelectedMarkerIndex(index);
       }
     };

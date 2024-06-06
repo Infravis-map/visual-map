@@ -61,8 +61,6 @@ COPY --from=builder /app/visual-map/.next ./.next
 RUN chmod -R 755 /app/visual-map/.next
 RUN chown -R nextjs:nodejs /app/visual-map/.next
 
-# RUN chown -R nextjs:nodejs /app/visual-map/.next/cache
-
 # USER nextjs:nodejs
 
 EXPOSE 3000
