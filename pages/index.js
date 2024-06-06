@@ -10,8 +10,8 @@ const Map = dynamic(() => import("../components/Map.js"), { ssr: false });
 export async function getServerSideProps() {
   // Change to getServerSideProps to run on each request
   try {
-    const res = await fetch("http://localhost:8080/filter");
-    // const res = await fetch("http://app:8080/filter");
+    // const res = await fetch("http://localhost:8080/filter");
+    const res = await fetch("http://app:8080/filter");
     const data = await res.json();
     return {
       props: {
@@ -111,7 +111,7 @@ export default function Home({ projects: initialProjects }) {
 
     try {
       const res = await fetch(`http://localhost:8080/filter?${queryString}`);
-    //   const res = await fetch(`http://app:8080/filter?${queryString}`);
+      // const res = await fetch(`http://app:8080/filter?${queryString}`);
 
       const data = await res.json();
       setProjects(data);
@@ -326,7 +326,7 @@ export default function Home({ projects: initialProjects }) {
         </form>
 
         <div className={styles.projectContainer}>
-          {projects != null &&
+          {projects != null && projects.length > 0 &&
             projects.map((project) => (
               <Project
                 title={project.Title}
