@@ -72,7 +72,7 @@ const edges = [
   { source: 8, target: 0 }
 ];
 
-export default function Map({ projects }) {
+export default function Map({ projects, fetchProjects }) {
   const [map, setMap] = useState(null);
   const [showEdges, setShowEdges] = useState(true); // State variable to toggle edges
 
@@ -86,7 +86,7 @@ export default function Map({ projects }) {
     }
     for (let i = 0; i < projects.length; i++) {
       if (nodes[projects[i].Institute_id] != null) {
-        console.log(projects[i].Institute_id);
+        // console.log(projects[i].Institute_id);
         nodes[projects[i].Institute_id].num++;
       }
     }
@@ -164,6 +164,14 @@ export default function Map({ projects }) {
       } else {
         console.log("Marker clicked: ", index);
         setSelectedMarkerIndex(index);
+
+        fetchProjects({
+          search: '',
+          level: '',
+          startdate: '',
+          enddate: '',
+          institutes: [index+1], // Filtering by the selected institute
+        });
       }
     };
 

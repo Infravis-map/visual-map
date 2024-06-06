@@ -49,7 +49,49 @@ export default function Home({ projects: initialProjects }) {
   const [minHours, setMinHours] = useState(0);
   const [level, setLevel] = useState(null);
 
-  console.log(projects);
+  const instituteMapping = {
+    umu: 1,
+    mium: 2,
+    uu: 3,
+    kth: 4,
+    liu: 5,
+    chalmers: 6,
+    ugot: 7,
+    lnu: 8,
+    lu: 9,
+  };
+
+  const fetchProjects = async (filterParams) => {
+    const { search, level, startdate, enddate, institutes } = filterParams;
+    
+    const queryData = {
+      q: search,
+      priority: level,
+      start_date: startdate,
+      end_date: enddate,
+      institute_id: institutes.join(","),
+    };
+
+    let queryString = new URLSearchParams();
+
+    for (let key in queryData) {
+      if (queryData[key] !== null && queryData[key] !== "") {
+        queryString.append(key, queryData[key]);
+      }
+    }
+
+    console.log(queryString.toString());
+
+    try {
+      const res = await fetch(`http://localhost:8080/filter?${queryString}`);
+      console.log("filtered");
+
+      const data = await res.json();
+      setProjects(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,49 +117,19 @@ export default function Home({ projects: initialProjects }) {
 
     console.log(formData);
 
-    const instituteMapping = {
-      umu: 1,
-      mium: 2,
-      uu: 3,
-      kth: 4,
-      liu: 5,
-      chalmers: 6,
-      ugot: 7,
-      lnu: 8,
-      lu: 9,
-    };
-
     const institutes = Object.entries(formData)
       .filter(([key, value]) => value === true && key in instituteMapping)
       .map(([key]) => instituteMapping[key]);
 
-    const queryData = {
-      q: formData.search,
-      priority: formData.level,
-      start_date: formData.startdate,
-      end_date: formData.enddate,
-      institute_id: institutes.join(","),
+    const filterParams = {
+      search: formData.search,
+      level: formData.level,
+      startdate: formData.startdate,
+      enddate: formData.enddate,
+      institutes: institutes,
     };
 
-    let queryString = new URLSearchParams();
-
-    for (let key in queryData) {
-      if (queryData[key] !== null && queryData[key] !== "") {
-        queryString.append(key, queryData[key]);
-      }
-    }
-
-    console.log(queryString.toString());
-
-    try {
-      const res = await fetch(`http://localhost:8080/filter?${queryString}`);
-      // const res = await fetch(`http://app:8080/filter?${queryString}`);
-
-      const data = await res.json();
-      setProjects(data);
-    } catch (error) {
-      console.error(error);
-    }
+    fetchProjects(filterParams);
   };
 
   const handleFilter = () => {
@@ -368,7 +380,7 @@ export default function Home({ projects: initialProjects }) {
 
       <div ref={mapRef}>
         {/* <D3Example width="200" height="200" /> */}
-        <Map projects={projects} />
+        <Map projects={projects} fetchProjects={fetchProjects} />
       </div>
     </div>
   );
