@@ -88,6 +88,7 @@ export default function Home({ projects: initialProjects }) {
 
       const data = await res.json();
       setProjects(data);
+
     } catch (error) {
       console.error(error);
     }
@@ -380,7 +381,7 @@ export default function Home({ projects: initialProjects }) {
 
       <div ref={mapRef}>
         {/* <D3Example width="200" height="200" /> */}
-        <Map projects={projects} fetchProjects={fetchProjects} />
+        <Map projects={projects} setProjects={setProjects} />
       </div>
     </div>
   );

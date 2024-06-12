@@ -69,16 +69,24 @@ const edges = [
   { source: 5, target: 6 },
   { source: 6, target: 7 },
   { source: 7, target: 8 },
-  { source: 8, target: 0 }
+  { source: 8, target: 0 },
 ];
 
-export default function Map({ projects, fetchProjects }) {
+export default function Map({ projects, setProjects }) {
   const [map, setMap] = useState(null);
   const [showEdges, setShowEdges] = useState(true); // State variable to toggle edges
 
-  GetNumInstitues();
+  // Holding state of which marker is selected
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
+  const markerRefs = useRef([]); // To store marker references
+
+  useEffect(() => {
+    GetNumInstitues();
+  }, [projects]);
 
   function GetNumInstitues() {
+    nodes.forEach((node) => (node.num = 0)); // Reset the counts
+
     // gets a number for how many projects per institute
     if (projects == null) {
       console.log("No projects");
@@ -93,7 +101,11 @@ export default function Map({ projects, fetchProjects }) {
 
     for (let i = 0; i < nodes.length; i++) {
       if (i == 5) {
-        nodes[i].size = getLogMappedValue(nodes[i].num + nodes[i+1].num, 1, 10);
+        nodes[i].size = getLogMappedValue(
+          nodes[i].num + nodes[i + 1].num,
+          1,
+          10
+        );
       } else if (i == 6) {
         nodes[i].size = 0;
       } else {
@@ -123,14 +135,12 @@ export default function Map({ projects, fetchProjects }) {
     return mappedValue;
   }
 
-  // Define a functional component to render dynamic markers
-  function DynamicMarkers() {
-    // Define an array of marker positions
+  // Define an array of marker positions
 
-    function createIcon(color, size) {
-      return L.divIcon({
-        className: "custom-div-icon",
-        html: `
+  function createIcon(color, size) {
+    return L.divIcon({
+      className: "custom-div-icon",
+      html: `
     <svg xmlns='http://www.w3.org/2000/svg'
       width='${size}'
       height='${size}'
@@ -145,107 +155,137 @@ export default function Map({ projects, fetchProjects }) {
         r='10'
       />
     </svg>`,
-        iconSize: [size, size],
-        iconAnchor: [size / 2, size / 2],
-        popupAnchor: [0, -size / 2],
-      });
+      iconSize: [size, size],
+      iconAnchor: [size / 2, size / 2],
+      popupAnchor: [0, -size / 2],
+    });
+  }
+
+  const color = "#ef42f5";
+  const [zoomLevel, setZoomLevel] = useState(9);
+
+  const handleZoomEnd = () => {
+    setZoomLevel(map.getZoom());
+  };
+
+  useEffect(() => {
+    if (map) {
+      map.on("zoomend", handleZoomEnd);
     }
 
-    const color = "#ef42f5";
-
-    // Holding state of which marker is selected
-    const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
-    const markerRefs = useRef([]); // To store marker references
-
-    // Function to handle marker click
-    const handleMarkerClick = (index) => {
-      if (selectedMarkerIndex === index) {
-        setSelectedMarkerIndex(null);
-      } else {
-        console.log("Marker clicked: ", index);
-        setSelectedMarkerIndex(index);
-
-        fetchProjects({
-          search: '',
-          level: '',
-          startdate: '',
-          enddate: '',
-          institutes: [index+1], // Filtering by the selected institute
-        });
-      }
-    };
-
-    const [zoomLevel, setZoomLevel] = useState(9);
-
-    const handleZoomEnd = () => {
-      setZoomLevel(map.getZoom());
-    };
-
-    useEffect(() => {
+    return () => {
       if (map) {
-        map.on("zoomend", handleZoomEnd);
+        map.off("zoomend", handleZoomEnd);
       }
+    };
+  }, [map]);
 
-      return () => {
-        if (map) {
-          map.off("zoomend", handleZoomEnd);
-        }
-      };
-    }, [map]);
+  const fetchProjects = async (filterParams) => {
+    const { search, level, startdate, enddate, institutes } = filterParams;
 
-    useEffect(() => {
-      if (
-        selectedMarkerIndex !== null &&
-        markerRefs.current[selectedMarkerIndex]
-      ) {
-        markerRefs.current[selectedMarkerIndex].openPopup();
+    const queryData = {
+      q: search,
+      priority: level,
+      start_date: startdate,
+      end_date: enddate,
+      institute_id: institutes.join(","),
+    };
+
+    let queryString = new URLSearchParams();
+
+    for (let key in queryData) {
+      if (queryData[key] !== null && queryData[key] !== "") {
+        queryString.append(key, queryData[key]);
       }
-      // Close other popups
-      markerRefs.current.forEach((marker, index) => {
-        if (index !== selectedMarkerIndex && marker) {
-          marker.closePopup();
-        }
+    }
+
+    console.log(queryString.toString());
+
+    try {
+      const res = await fetch(`http://localhost:8080/filter?${queryString}`);
+      console.log("filtered");
+
+      const data = await res.json();
+      console.log("after filtering, ", selectedMarkerIndex + 1);
+      setProjects(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Function to handle marker click
+  const handleMarkerClick = (index) => {
+    if (selectedMarkerIndex === index) {
+      setSelectedMarkerIndex(null);
+    } else {
+      console.log("Marker clicked: ", index);
+      setSelectedMarkerIndex(index);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedMarkerIndex !== null) {
+      fetchProjects({
+        search: "",
+        level: "",
+        startdate: "",
+        enddate: "",
+        institutes: [selectedMarkerIndex + 1], // Filtering by the selected institute
       });
-    }, [selectedMarkerIndex]);
 
-    // Create an array to store dynamic markers
-    const dynamicMarkers = nodes.map((node, index) => (
-      <Marker
-        key={node.id}
-        position={node.position}
-        icon={createIcon(
-          color,
-          baseMarkerSize * Math.pow(2, zoomLevel - 9) * node.size
-        )}
-        eventHandlers={{
-          click: () => handleMarkerClick(index),
-        }}
-        opacity={selectedMarkerIndex === node.id ? 0.9 : 0.5}
-        ref={(el) => (markerRefs.current[index] = el)}
-      >
-        <Popup>{node.name}</Popup>
-      </Marker>
-    ));
+      console.log("Filtering by institute: ", selectedMarkerIndex + 1);
+    }
+  }, [selectedMarkerIndex]);
 
-    return dynamicMarkers;
-  }
+  useEffect(() => {
+    console.log("SelectedMarkerIndex changed: ", selectedMarkerIndex);
+    if (
+      selectedMarkerIndex !== null &&
+      markerRefs.current[selectedMarkerIndex]
+    ) {
+      markerRefs.current[selectedMarkerIndex].openPopup();
+      console.log("Opening popup for marker: ", selectedMarkerIndex);
+    }
+    // Close other popups
+    markerRefs.current.forEach((marker, index) => {
+      if (index !== selectedMarkerIndex && marker) {
+        console.log("SelectedMarkerIndex ", selectedMarkerIndex);
+        marker.closePopup();
+      }
+    });
+  }, [selectedMarkerIndex]);
 
-  function DynamicEdges() {
-    const dynamicEdges = edges.map((edge, index) => (
-      <Polyline
-        weight={3}
-        key={index}
-        positions={[
-          nodes.find((node) => node.id === edge.source).position,
-          nodes.find((node) => node.id === edge.target).position,
-        ]}
-        color="#ef42f5"
-        opacity={0.5}
-      />
-    ));
+  // Create an array to store dynamic markers
+  const dynamicMarkers = nodes.map((node, index) => (
+    <Marker
+      key={node.id}
+      position={node.position}
+      icon={createIcon(
+        color,
+        baseMarkerSize * Math.pow(2, zoomLevel - 9) * node.size
+      )}
+      eventHandlers={{
+        click: () => handleMarkerClick(index),
+      }}
+      opacity={selectedMarkerIndex === node.id ? 0.9 : 0.5}
+      ref={(el) => (markerRefs.current[index] = el)}
+    >
+      <Popup>{node.name}</Popup>
+    </Marker>
+  ));
 
-    return dynamicEdges;
-  }
+  const dynamicEdges = edges.map((edge, index) => (
+    <Polyline
+      weight={3}
+      key={index}
+      positions={[
+        nodes.find((node) => node.id === edge.source).position,
+        nodes.find((node) => node.id === edge.target).position,
+      ]}
+      color="#ef42f5"
+      opacity={0.5}
+    />
+  ));
 
   return (
     <div style={{ position: "relative" }}>
@@ -270,8 +310,8 @@ export default function Map({ projects, fetchProjects }) {
             [1, 1],
           ]}
         />
-        <DynamicMarkers />
-        {showEdges && <DynamicEdges />} {/* Conditionally render edges */}
+        {dynamicMarkers}
+        {showEdges && dynamicEdges} {/* Conditionally render edges */}
       </MapContainer>
 
       {/* Toggle button */}
