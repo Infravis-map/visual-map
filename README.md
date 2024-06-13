@@ -1,16 +1,10 @@
 # How to use
 
-## Install docker
+## READ the Combined repository README.md
 
-1. Installera docker desktop på datorn
-2. Starta docker desktop
-3. gå in till visual-map repository via kommandotolken.
-4. kör `docker build -t nextjs-docker .`
-5. kör `docker run -p 3000:3000 nextjs-docker`
+## To run locally without connection to database and docker.
 
-## Kör den lokalt
-
-1. Installera docker desktop på datorn
-2. Starta docker desktop
-3. gå in till visual-map repository via kommandotolken.
-4. `npm run dev`
+3. cd into the visual-map directory
+1. install npm if you don't have it
+1. run `npm install`
+4. run `npm run dev`

@@ -40,11 +40,13 @@ export default function InputPage() {
     ];
 
     const instituteOptionsHandler = (e) => {
-        const inst = instituteOptions.indexOf(e.target.value)
+        console.log(e.target.value);
+        const inst = parseInt(e.target.value) + 1;
+        console.log(inst);
         if (inst == -1) {
-            setInstitute(null)
+            setInstitute(null);
         } else {
-            setInstitute(inst)
+            setInstitute(inst);
         }
     }
 
@@ -67,7 +69,7 @@ export default function InputPage() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(`handleSubmit() title: ${title}, total hours: ${hours}`);
+        // console.log(`handleSubmit() title: ${title}, total hours: ${hours}`);
 
         setError("");
         setSuccess("");
@@ -75,21 +77,22 @@ export default function InputPage() {
         // testing with hardcoded pw
         setPassword("123");
 
+        console.log(institute);
+
         const project = {
             title,
-            institute_id: institute,
+            institute: institute,
             abstract: about,
             start_date: startdate,
             end_date: enddate,
             coordinator,
-            application_experts: applicationExperts,
-            users,
-            hours,
-            level,
-            link,
+            // application_experts: ,
+            user_names: users.split(",").map((name) => name.trim()).concat(applicationExperts.split(",").map((name) => name.trim())),
+            hours: parseInt(hours),
+            priority: parseInt(level),
+            header_url: link,
             keywords,
-            image,
-            password,
+            img: image,
         };
 
         try {
