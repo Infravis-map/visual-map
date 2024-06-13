@@ -60,21 +60,12 @@ const nodes = [
   // Add more nodes as needed
 ];
 
-const edges = [
-  { source: 0, target: 1 },
-  { source: 1, target: 2 },
-  { source: 2, target: 3 },
-  { source: 3, target: 4 },
-  { source: 4, target: 5 },
-  { source: 5, target: 6 },
-  { source: 6, target: 7 },
-  { source: 7, target: 8 },
-  { source: 8, target: 0 },
-];
+
 
 export default function Map({ projects, setProjects }) {
   const [map, setMap] = useState(null);
   const [showEdges, setShowEdges] = useState(true); // State variable to toggle edges
+  const [edges, setEdges] = useState([]); // State for dynamic edges
 
   // Holding state of which marker is selected
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
@@ -82,7 +73,39 @@ export default function Map({ projects, setProjects }) {
 
   useEffect(() => {
     GetNumInstitues();
+    console.log(projects);
   }, [projects]);
+
+  // function generateEdges(projects) {
+  //   const edgeSet = new Set();
+
+  //   projects.forEach((project) => {
+  //     const { institute_ids } = project;
+  //     for (let i = 0; i < institute_ids.length; i++) {
+  //       for (let j = i + 1; j < institute_ids.length; j++) {
+  //         const source = institute_ids[i];
+  //         const target = institute_ids[j];
+  //         const edge =
+  //           source < target ? `${source}-${target}` : `${target}-${source}`;
+  //         edgeSet.add(edge);
+  //       }
+  //     }
+  //   });
+
+  //   const edges = Array.from(edgeSet).map((edge) => {
+  //     const [source, target] = edge.split("-").map(Number);
+  //     return { source, target };
+  //   });
+
+  //   return edges;
+  // }
+
+  // useEffect(() => {
+  //   if (projects) {
+  //     const tmp_edges = generateEdges(projects);
+  //     setEdges(tmp_edges);
+  //   }
+  // }, [projects]);
 
   function GetNumInstitues() {
     nodes.forEach((node) => (node.num = 0)); // Reset the counts
@@ -238,7 +261,7 @@ export default function Map({ projects, setProjects }) {
   }, [selectedMarkerIndex]);
 
   useEffect(() => {
-    console.log("SelectedMarkerIndex changed: ", selectedMarkerIndex);
+    // console.log("SelectedMarkerIndex changed: ", ectedMarkerIndex);
     if (
       selectedMarkerIndex !== null &&
       markerRefs.current[selectedMarkerIndex]
@@ -249,7 +272,6 @@ export default function Map({ projects, setProjects }) {
     // Close other popups
     markerRefs.current.forEach((marker, index) => {
       if (index !== selectedMarkerIndex && marker) {
-        console.log("SelectedMarkerIndex ", selectedMarkerIndex);
         marker.closePopup();
       }
     });
@@ -295,7 +317,8 @@ export default function Map({ projects, setProjects }) {
         zoom={9}
         maxZoom={12}
         attributionControl={false}
-        style={{ height: "90vh", width: "100%" }}
+        className="map-container" // Added class here
+        style={{ width: "100%" }}
         maxBounds={[
           [-1, -1],
           [1, 1],
