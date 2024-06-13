@@ -317,7 +317,8 @@ export default function Map({ projects, setProjects }) {
         zoom={9}
         maxZoom={12}
         attributionControl={false}
-        style={{ height: "90vh", width: "100%" }}
+        className="map-container" // Added class here
+        style={{ width: "100%" }}
         maxBounds={[
           [-1, -1],
           [1, 1],
