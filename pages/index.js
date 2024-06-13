@@ -62,11 +62,13 @@ export default function Home({ projects: initialProjects }) {
   };
 
   const fetchProjects = async (filterParams) => {
-    const { search, level, startdate, enddate, institutes } = filterParams;
+    const { search, level, minhours, maxhours, startdate, enddate, institutes } = filterParams;
 
     const queryData = {
       q: search,
       priority: level,
+      min_hours: minhours,
+      max_hours: maxhours,
       start_date: startdate,
       end_date: enddate,
       institutes: institutes.join(","),
@@ -123,6 +125,8 @@ export default function Home({ projects: initialProjects }) {
     const filterParams = {
       search: formData.search,
       level: formData.level,
+      minhours: formData.minhours,
+      maxhours: formData.maxhours,
       startdate: formData.startdate,
       enddate: formData.enddate,
       institutes: institutes,
