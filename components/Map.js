@@ -60,35 +60,79 @@ const nodes = [
   // Add more nodes as needed
 ];
 
-const edges = [
-  { source: 0, target: 1 },
-  { source: 1, target: 2 },
-  { source: 2, target: 3 },
-  { source: 3, target: 4 },
-  { source: 4, target: 5 },
-  { source: 5, target: 6 },
-  { source: 6, target: 7 },
-  { source: 7, target: 8 },
-  { source: 8, target: 0 }
-];
 
-export default function Map({ projects }) {
+
+export default function Map({ projects, setProjects }) {
   const [map, setMap] = useState(null);
   const [showEdges, setShowEdges] = useState(true); // State variable to toggle edges
+  const [edges, setEdges] = useState([]); // State for dynamic edges
 
-  GetNumInstitues();
+  // Holding state of which marker is selected
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
+  const markerRefs = useRef([]); // To store marker references
+
+  useEffect(() => {
+    GetNumInstitues();
+    console.log(projects);
+  }, [projects]);
+
+  function generateEdges(projects) {
+    const edgeSet = new Set();
+
+    console.log(projects);
+
+    projects.forEach((project) => {
+      const { user_institutes } = project;
+      for (let i = 0; i < user_institutes.length; i++) {
+        for (let j = i + 1; j < user_institutes.length; j++) {
+          const source = user_institutes[i]-1;
+          const target = user_institutes[j]-1;
+          const edge =
+            source < target ? `${source}-${target}` : `${target}-${source}`;
+          edgeSet.add(edge);
+        }
+      }
+    });
+
+    const edges = Array.from(edgeSet).map((edge) => {
+      const [source, target] = edge.split("-").map(Number);
+      return { source, target };
+    });
+
+    return edges;
+  }
+
+  useEffect(() => {
+    if (projects) {
+      const tmp_edges = generateEdges(projects);
+      setEdges(tmp_edges);
+    }
+  }, [projects]);
 
   function GetNumInstitues() {
+    nodes.forEach((node) => (node.num = 0)); // Reset the counts
+
     // gets a number for how many projects per institute
+    if (projects == null) {
+      console.log("No projects");
+      return;
+    }
     for (let i = 0; i < projects.length; i++) {
-      if (nodes[projects[i].institute_id] != null) {
-        nodes[projects[i].institute_id].num++;
+      if (nodes[projects[i].institute - 1] != null) {
+        // console.log(projects[i].Institute_id);
+        nodes[projects[i].institute - 1].num++;
       }
     }
 
     for (let i = 0; i < nodes.length; i++) {
+
+      // For gothenburg and chalmers at the same location.
       if (i == 5) {
-        nodes[i].size = getLogMappedValue(nodes[i].num + nodes[i+1].num, 1, 10);
+        nodes[i].size = getLogMappedValue(
+          nodes[i].num + nodes[i + 1].num,
+          1,
+          10
+        );
       } else if (i == 6) {
         nodes[i].size = 0;
       } else {
@@ -118,14 +162,12 @@ export default function Map({ projects }) {
     return mappedValue;
   }
 
-  // Define a functional component to render dynamic markers
-  function DynamicMarkers() {
-    // Define an array of marker positions
+  // Define an array of marker positions
 
-    function createIcon(color, size) {
-      return L.divIcon({
-        className: "custom-div-icon",
-        html: `
+  function createIcon(color, size) {
+    return L.divIcon({
+      className: "custom-div-icon",
+      html: `
     <svg xmlns='http://www.w3.org/2000/svg'
       width='${size}'
       height='${size}'
@@ -140,99 +182,115 @@ export default function Map({ projects }) {
         r='10'
       />
     </svg>`,
-        iconSize: [size, size],
-        iconAnchor: [size / 2, size / 2],
-        popupAnchor: [0, -size / 2],
-      });
+      iconSize: [size, size],
+      iconAnchor: [size / 2, size / 2],
+      popupAnchor: [0, -size / 2],
+    });
+  }
+
+  const color = "#ef42f5";
+  const [zoomLevel, setZoomLevel] = useState(9);
+
+  const handleZoomEnd = () => {
+    setZoomLevel(map.getZoom());
+  };
+
+  useEffect(() => {
+    if (map) {
+      map.on("zoomend", handleZoomEnd);
     }
 
-    const color = "#ef42f5";
-
-    // Holding state of which marker is selected
-    const [selectedMarkerIndex, setSelectedMarkerIndex] = useState(null);
-    const markerRefs = useRef([]); // To store marker references
-
-    // Function to handle marker click
-    const handleMarkerClick = (index) => {
-      if (selectedMarkerIndex === index) {
-        setSelectedMarkerIndex(null);
-      } else {
-        // console.log(getLogMappedValue(12, 1, 15));
-        setSelectedMarkerIndex(index);
-      }
-    };
-
-    const [zoomLevel, setZoomLevel] = useState(9);
-
-    const handleZoomEnd = () => {
-      setZoomLevel(map.getZoom());
-    };
-
-    useEffect(() => {
+    return () => {
       if (map) {
-        map.on("zoomend", handleZoomEnd);
+        map.off("zoomend", handleZoomEnd);
       }
+    };
+  }, [map]);
 
-      return () => {
-        if (map) {
-          map.off("zoomend", handleZoomEnd);
-        }
-      };
-    }, [map]);
 
-    useEffect(() => {
-      if (
-        selectedMarkerIndex !== null &&
-        markerRefs.current[selectedMarkerIndex]
-      ) {
-        markerRefs.current[selectedMarkerIndex].openPopup();
+  const fetchInstProjects = async (institute_id) => {
+    let queryString;
+    if (institute_id === 6) {
+      queryString = `institutes=${institute_id-1}%2C${institute_id}`;
+    } else {
+      queryString = `institutes=${institute_id-1}`;
+    }
+    console.log(queryString.toString());
+  
+    try {
+      const res = await fetch(`http://localhost:8080/filter?${queryString}`);
+  
+      const data = await res.json();
+      setProjects(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Function to handle marker click
+  const handleMarkerClick = (index) => {
+    if (selectedMarkerIndex === index) {
+      setSelectedMarkerIndex(null);
+    } else {
+      console.log("Marker clicked: ", index);
+      setSelectedMarkerIndex(index);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedMarkerIndex !== null) {
+      fetchInstProjects(selectedMarkerIndex + 1);
+    }
+  }, [selectedMarkerIndex]);
+
+  useEffect(() => {
+    // console.log("SelectedMarkerIndex changed: ", ectedMarkerIndex);
+    if (
+      selectedMarkerIndex !== null &&
+      markerRefs.current[selectedMarkerIndex]
+    ) {
+      markerRefs.current[selectedMarkerIndex].openPopup();
+      console.log("Opening popup for marker: ", selectedMarkerIndex);
+    }
+    // Close other popups
+    markerRefs.current.forEach((marker, index) => {
+      if (index !== selectedMarkerIndex && marker) {
+        marker.closePopup();
       }
-      // Close other popups
-      markerRefs.current.forEach((marker, index) => {
-        if (index !== selectedMarkerIndex && marker) {
-          marker.closePopup();
-        }
-      });
-    }, [selectedMarkerIndex]);
+    });
+  }, [selectedMarkerIndex]);
 
-    // Create an array to store dynamic markers
-    const dynamicMarkers = nodes.map((node, index) => (
-      <Marker
-        key={node.id}
-        position={node.position}
-        icon={createIcon(
-          color,
-          baseMarkerSize * Math.pow(2, zoomLevel - 9) * node.size
-        )}
-        eventHandlers={{
-          click: () => handleMarkerClick(index),
-        }}
-        opacity={selectedMarkerIndex === node.id ? 0.9 : 0.5}
-        ref={(el) => (markerRefs.current[index] = el)}
-      >
-        <Popup>{node.name}</Popup>
-      </Marker>
-    ));
+  // Create an array to store dynamic markers
+  const dynamicMarkers = nodes.map((node, index) => (
+    <Marker
+      key={node.id}
+      position={node.position}
+      icon={createIcon(
+        color,
+        baseMarkerSize * Math.pow(2, zoomLevel - 9) * node.size
+      )}
+      eventHandlers={{
+        click: () => handleMarkerClick(index),
+      }}
+      opacity={selectedMarkerIndex === node.id ? 0.9 : 0.5}
+      ref={(el) => (markerRefs.current[index] = el)}
+    >
+      <Popup>{node.name}</Popup>
+    </Marker>
+  ));
 
-    return dynamicMarkers;
-  }
-
-  function DynamicEdges() {
-    const dynamicEdges = edges.map((edge, index) => (
-      <Polyline
-        weight={3}
-        key={index}
-        positions={[
-          nodes.find((node) => node.id === edge.source).position,
-          nodes.find((node) => node.id === edge.target).position,
-        ]}
-        color="#ef42f5"
-        opacity={0.5}
-      />
-    ));
-
-    return dynamicEdges;
-  }
+  const dynamicEdges = edges.map((edge, index) => (
+    <Polyline
+      weight={3}
+      key={index}
+      positions={[
+        nodes.find((node) => node.id === edge.source).position,
+        nodes.find((node) => node.id === edge.target).position,
+      ]}
+      color="#ef42f5"
+      opacity={0.5}
+    />
+  ));
 
   return (
     <div style={{ position: "relative" }}>
@@ -242,7 +300,8 @@ export default function Map({ projects }) {
         zoom={9}
         maxZoom={12}
         attributionControl={false}
-        style={{ height: "90vh", width: "100%" }}
+        className="map-container" // Added class here
+        style={{ width: "100%" }}
         maxBounds={[
           [-1, -1],
           [1, 1],
@@ -257,8 +316,8 @@ export default function Map({ projects }) {
             [1, 1],
           ]}
         />
-        <DynamicMarkers />
-        {showEdges && <DynamicEdges />} {/* Conditionally render edges */}
+        {dynamicMarkers}
+        {showEdges && dynamicEdges} {/* Conditionally render edges */}
       </MapContainer>
 
       {/* Toggle button */}

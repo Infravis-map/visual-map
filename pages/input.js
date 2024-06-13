@@ -1,5 +1,7 @@
 import { useState } from "react"
 import styles from '../styles/input.module.css'
+import fetch from "isomorphic-unfetch";
+
 
 let institutionNumber = 0
 
@@ -18,6 +20,9 @@ export default function InputPage() {
     const [link, setLink] = useState("")
     const [keywords, setKeywords] = useState("")
     const [image, setImage] = useState(null)
+    const [password, setPassword] = useState("")
+    const [error, setError] = useState("")
+    const [success, setSuccess] = useState("")
 
     const imageDisplay = image ? "block" : "none"
 
@@ -35,18 +40,73 @@ export default function InputPage() {
     ];
 
     const instituteOptionsHandler = (e) => {
-        const inst = instituteOptions.indexOf(e.target.value)
+        console.log(e.target.value);
+        const inst = parseInt(e.target.value) + 1;
+        console.log(inst);
         if (inst == -1) {
-            setInstitute(null)
+            setInstitute(null);
         } else {
-            setInstitute(inst)
+            setInstitute(inst);
         }
     }
 
-    const handleSubmit = (event) => {
+    const insertProject = async (project) => {
+        const response = await fetch("http://localhost:8080/insert", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(project)
+        });
+    
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || "Something went wrong");
+        }
+    
+        return response.json();
+    };
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(`handleSubmit() title: ${title}, total hours: ${hours}`)
-    }
+        // console.log(`handleSubmit() title: ${title}, total hours: ${hours}`);
+
+        setError("");
+        setSuccess("");
+
+        // testing with hardcoded pw
+        console.log(password);
+        if (password !== "admin") {
+            setError("Incorrect password");
+            return;
+        }
+
+        // console.log(institute);
+
+        const project = {
+            title,
+            institute: institute,
+            abstract: about,
+            start_date: startdate,
+            end_date: enddate,
+            coordinator,
+            // application_experts: ,
+            user_names: users.split(",").map((name) => name.trim()).concat(applicationExperts.split(",").map((name) => name.trim())),
+            hours: parseInt(hours),
+            priority: parseInt(level),
+            header_url: link,
+            keywords,
+            img: image,
+        };
+
+        try {
+            await insertProject(project);
+            setSuccess("Project inserted successfully!");
+            // Optionally reset form fields
+        } catch (err) {
+            setError(err.message);
+        }
+    };
 
     const changeImage = (e) => {
         if (e.target.files && e.target.files[0]) {
@@ -143,7 +203,7 @@ export default function InputPage() {
                 <label style={{marginTop:30, borderStyle:"solid", borderColor:"red", borderWidth:1, padding:20, paddingTop:15, borderRadius:5}}>
                     Password
                     <p>needed to add the project to the database</p>
-                    <input type="password" required></input>
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 </label>
                 <label style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:10}}>
                     Submit

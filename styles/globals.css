@@ -101,3 +101,15 @@ a {
   background-color: #ef42f5;
   color: #ffffff;
 }
+
+/* Define default height for the map */
+.map-container {
+  height: 100vh;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .map-container {
+    height: 60vh;
+  }
+}

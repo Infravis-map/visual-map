@@ -17,20 +17,20 @@ export default function Project({title, institute, coordinator, firstImage, link
         "Lund University (LU)",         // 8
     ];
 
-    const changeImage = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            //setImage(e.target.files[0])
-            const reader = new FileReader()
-            reader.readAsDataURL(e.target.files[0])
-            reader.onload = () => {
-                console.log('called: ', reader.result)
-                const readFile = (reader.result).toString()
-                console.log(readFile.length)
-                setImage(readFile)
-            }
-            //console.log(e.target.files[0])
-        }
-    }
+    // const changeImage = (e) => {
+    //     if (e.target.files && e.target.files[0]) {
+    //         //setImage(e.target.files[0])
+    //         const reader = new FileReader()
+    //         reader.readAsDataURL(e.target.files[0])
+    //         reader.onload = () => {
+    //             console.log('called: ', reader.result)
+    //             const readFile = (reader.result).toString()
+    //             console.log(readFile.length)
+    //             setImage(readFile)
+    //         }
+    //         //console.log(e.target.files[0])
+    //     }
+    // }
 
     return (
         <a href={link} target="_blank" onClick={() => setShowEdit(false)}>
@@ -52,7 +52,7 @@ export default function Project({title, institute, coordinator, firstImage, link
                 : null}
 
                  
-                <input type="file" accept="image/*"  name="image" style={{display:`${showEdit ? "block" : "none"}`}} onChange={(e) => changeImage(e)}></input>
+                {/* <input type="file" accept="image/*"  name="image" style={{display:`${showEdit ? "block" : "none"}`}} onChange={(e) => changeImage(e)}></input> */}
                 
                 
             </div>
