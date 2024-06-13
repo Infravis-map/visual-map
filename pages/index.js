@@ -69,7 +69,7 @@ export default function Home({ projects: initialProjects }) {
       priority: level,
       start_date: startdate,
       end_date: enddate,
-      institute_id: institutes.join(","),
+      institutes: institutes.join(","),
     };
     console.log(queryData);
 
