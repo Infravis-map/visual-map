@@ -1,5 +1,7 @@
 import { useState } from "react"
 import styles from '../styles/input.module.css'
+import fetch from "isomorphic-unfetch";
+
 
 let institutionNumber = 0
 
@@ -18,6 +20,9 @@ export default function InputPage() {
     const [link, setLink] = useState("")
     const [keywords, setKeywords] = useState("")
     const [image, setImage] = useState(null)
+    const [password, setPassword] = useState("")
+    const [error, setError] = useState("")
+    const [success, setSuccess] = useState("")
 
     const imageDisplay = image ? "block" : "none"
 
@@ -43,10 +48,58 @@ export default function InputPage() {
         }
     }
 
-    const handleSubmit = (event) => {
+    const insertProject = async (project) => {
+        const response = await fetch("http://localhost:8080/insert", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(project)
+        });
+    
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || "Something went wrong");
+        }
+    
+        return response.json();
+    };
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(`handleSubmit() title: ${title}, total hours: ${hours}`)
-    }
+        console.log(`handleSubmit() title: ${title}, total hours: ${hours}`);
+
+        setError("");
+        setSuccess("");
+
+        // testing with hardcoded pw
+        setPassword("123");
+
+        const project = {
+            title,
+            institute_id: institute,
+            abstract: about,
+            start_date: startdate,
+            end_date: enddate,
+            coordinator,
+            application_experts: applicationExperts,
+            users,
+            hours,
+            level,
+            link,
+            keywords,
+            image,
+            password,
+        };
+
+        try {
+            await insertProject(project);
+            setSuccess("Project inserted successfully!");
+            // Optionally reset form fields
+        } catch (err) {
+            setError(err.message);
+        }
+    };
 
     const changeImage = (e) => {
         if (e.target.files && e.target.files[0]) {

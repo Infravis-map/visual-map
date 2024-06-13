@@ -13,6 +13,7 @@ export async function getServerSideProps() {
     // const res = await fetch("http://localhost:8080/filter");
     const res = await fetch("http://app:8080/filter");
     const data = await res.json();
+
     return {
       props: {
         projects: data,
@@ -73,7 +74,7 @@ export default function Home({ projects: initialProjects }) {
       end_date: enddate,
       institutes: institutes.join(","),
     };
-    console.log(queryData);
+    console.log("qqqqq: ", queryData);
 
     let queryString = new URLSearchParams();
 
@@ -82,6 +83,8 @@ export default function Home({ projects: initialProjects }) {
         queryString.append(key, queryData[key]);
       }
     }
+
+    console.log("q params: ", queryString.toString());
 
     try {
       const res = await fetch(`http://localhost:8080/filter?${queryString}`);

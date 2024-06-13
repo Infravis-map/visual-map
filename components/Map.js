@@ -76,36 +76,38 @@ export default function Map({ projects, setProjects }) {
     console.log(projects);
   }, [projects]);
 
-  // function generateEdges(projects) {
-  //   const edgeSet = new Set();
+  function generateEdges(projects) {
+    const edgeSet = new Set();
 
-  //   projects.forEach((project) => {
-  //     const { institute_ids } = project;
-  //     for (let i = 0; i < institute_ids.length; i++) {
-  //       for (let j = i + 1; j < institute_ids.length; j++) {
-  //         const source = institute_ids[i];
-  //         const target = institute_ids[j];
-  //         const edge =
-  //           source < target ? `${source}-${target}` : `${target}-${source}`;
-  //         edgeSet.add(edge);
-  //       }
-  //     }
-  //   });
+    console.log(projects);
 
-  //   const edges = Array.from(edgeSet).map((edge) => {
-  //     const [source, target] = edge.split("-").map(Number);
-  //     return { source, target };
-  //   });
+    projects.forEach((project) => {
+      const { user_institutes } = project;
+      for (let i = 0; i < user_institutes.length; i++) {
+        for (let j = i + 1; j < user_institutes.length; j++) {
+          const source = user_institutes[i]-1;
+          const target = user_institutes[j]-1;
+          const edge =
+            source < target ? `${source}-${target}` : `${target}-${source}`;
+          edgeSet.add(edge);
+        }
+      }
+    });
 
-  //   return edges;
-  // }
+    const edges = Array.from(edgeSet).map((edge) => {
+      const [source, target] = edge.split("-").map(Number);
+      return { source, target };
+    });
 
-  // useEffect(() => {
-  //   if (projects) {
-  //     const tmp_edges = generateEdges(projects);
-  //     setEdges(tmp_edges);
-  //   }
-  // }, [projects]);
+    return edges;
+  }
+
+  useEffect(() => {
+    if (projects) {
+      const tmp_edges = generateEdges(projects);
+      setEdges(tmp_edges);
+    }
+  }, [projects]);
 
   function GetNumInstitues() {
     nodes.forEach((node) => (node.num = 0)); // Reset the counts
@@ -116,13 +118,15 @@ export default function Map({ projects, setProjects }) {
       return;
     }
     for (let i = 0; i < projects.length; i++) {
-      if (nodes[projects[i].Institute_id] != null) {
+      if (nodes[projects[i].institute - 1] != null) {
         // console.log(projects[i].Institute_id);
-        nodes[projects[i].Institute_id].num++;
+        nodes[projects[i].institute - 1].num++;
       }
     }
 
     for (let i = 0; i < nodes.length; i++) {
+
+      // For gothenburg and chalmers at the same location.
       if (i == 5) {
         nodes[i].size = getLogMappedValue(
           nodes[i].num + nodes[i + 1].num,
@@ -203,33 +207,20 @@ export default function Map({ projects, setProjects }) {
     };
   }, [map]);
 
-  const fetchProjects = async (filterParams) => {
-    const { search, level, startdate, enddate, institutes } = filterParams;
 
-    const queryData = {
-      q: search,
-      priority: level,
-      start_date: startdate,
-      end_date: enddate,
-      institute_id: institutes.join(","),
-    };
-
-    let queryString = new URLSearchParams();
-
-    for (let key in queryData) {
-      if (queryData[key] !== null && queryData[key] !== "") {
-        queryString.append(key, queryData[key]);
-      }
+  const fetchInstProjects = async (institute_id) => {
+    let queryString;
+    if (institute_id === 6) {
+      queryString = `institutes=${institute_id-1}%2C${institute_id}`;
+    } else {
+      queryString = `institutes=${institute_id-1}`;
     }
-
     console.log(queryString.toString());
-
+  
     try {
       const res = await fetch(`http://localhost:8080/filter?${queryString}`);
-      console.log("filtered");
-
+  
       const data = await res.json();
-      console.log("after filtering, ", selectedMarkerIndex + 1);
       setProjects(data);
     } catch (error) {
       console.error(error);
@@ -248,15 +239,7 @@ export default function Map({ projects, setProjects }) {
 
   useEffect(() => {
     if (selectedMarkerIndex !== null) {
-      fetchProjects({
-        search: "",
-        level: "",
-        startdate: "",
-        enddate: "",
-        institutes: [selectedMarkerIndex + 1], // Filtering by the selected institute
-      });
-
-      console.log("Filtering by institute: ", selectedMarkerIndex + 1);
+      fetchInstProjects(selectedMarkerIndex + 1);
     }
   }, [selectedMarkerIndex]);
 
