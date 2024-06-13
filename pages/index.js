@@ -350,7 +350,7 @@ export default function Home({ projects: initialProjects }) {
                 title={project.title}
                 institute={project.institute}
                 coordinator={project.user_names[0]}
-                firstImage={project.image}
+                firstImage={project.img}
                 link={project.URL}
                 key={project.title + project.nodes + project.coordinator}
               />

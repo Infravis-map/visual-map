@@ -75,9 +75,13 @@ export default function InputPage() {
         setSuccess("");
 
         // testing with hardcoded pw
-        setPassword("123");
+        console.log(password);
+        if (password !== "admin") {
+            setError("Incorrect password");
+            return;
+        }
 
-        console.log(institute);
+        // console.log(institute);
 
         const project = {
             title,
@@ -199,7 +203,7 @@ export default function InputPage() {
                 <label style={{marginTop:30, borderStyle:"solid", borderColor:"red", borderWidth:1, padding:20, paddingTop:15, borderRadius:5}}>
                     Password
                     <p>needed to add the project to the database</p>
-                    <input type="password" required></input>
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 </label>
                 <label style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:10}}>
                     Submit
