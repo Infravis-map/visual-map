@@ -63,7 +63,7 @@ export default function Home({ projects: initialProjects }) {
 
   const fetchProjects = async (filterParams) => {
     const { search, level, startdate, enddate, institutes } = filterParams;
-    
+
     const queryData = {
       q: search,
       priority: level,
@@ -71,6 +71,7 @@ export default function Home({ projects: initialProjects }) {
       end_date: enddate,
       institute_id: institutes.join(","),
     };
+    console.log(queryData);
 
     let queryString = new URLSearchParams();
 
@@ -80,14 +81,11 @@ export default function Home({ projects: initialProjects }) {
       }
     }
 
-    console.log(queryString.toString());
-
     try {
       const res = await fetch(`http://localhost:8080/filter?${queryString}`);
-      console.log("filtered");
-
       const data = await res.json();
       setProjects(data);
+      console.log(data)
 
     } catch (error) {
       console.error(error);
@@ -342,12 +340,12 @@ export default function Home({ projects: initialProjects }) {
           {projects != null && projects.length > 0 &&
             projects.map((project) => (
               <Project
-                title={project.Title}
-                institute={project.Institute_id}
-                coordinator={project.Users[0]}
+                title={project.title}
+                institute={project.institute}
+                coordinator={project.user_names[0]}
                 firstImage={project.image}
                 link={project.URL}
-                key={project.Title + project.nodes + project.coordinator}
+                key={project.title + project.nodes + project.coordinator}
               />
             ))}
         </div>
