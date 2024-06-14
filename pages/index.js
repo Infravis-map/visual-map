@@ -348,7 +348,7 @@ export default function Home({ projects: initialProjects }) {
             projects.map((project) => (
               <Project
                 title={project.title}
-                institute={project.institute}
+                institute={project.institute-1}
                 coordinator={project.user_names[0]}
                 firstImage={project.img}
                 link={project.URL}
