@@ -211,9 +211,9 @@ export default function Map({ projects, setProjects }) {
   const fetchInstProjects = async (institute_id) => {
     let queryString;
     if (institute_id === 6) {
-      queryString = `institutes=${institute_id-1}%2C${institute_id}`;
+      queryString = `institutes=${institute_id+1}%2C${institute_id}`;
     } else {
-      queryString = `institutes=${institute_id-1}`;
+      queryString = `institutes=${institute_id}`;
     }
     console.log(queryString.toString());
   

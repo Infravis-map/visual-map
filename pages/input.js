@@ -40,7 +40,6 @@ export default function InputPage() {
     ];
 
     const instituteOptionsHandler = (e) => {
-        console.log(e.target.value);
         const inst = parseInt(e.target.value) + 1;
         console.log(inst);
         if (inst == -1) {
