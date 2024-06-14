@@ -90,7 +90,7 @@ export default function Home({ projects: initialProjects }) {
       const res = await fetch(`http://localhost:8080/filter?${queryString}`);
       const data = await res.json();
       setProjects(data);
-      console.log(data)
+      console.log(data);
 
     } catch (error) {
       console.error(error);

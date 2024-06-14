@@ -82,6 +82,9 @@ export default function InputPage() {
 
         // console.log(institute);
 
+        const names = users.split(",").map((name) => name.trim()).concat(applicationExperts.split(",").map((name) => name.trim()));
+        console.log(names);
+
         const project = {
             title,
             institute: institute,
@@ -90,7 +93,7 @@ export default function InputPage() {
             end_date: enddate,
             coordinator,
             // application_experts: ,
-            user_names: users.split(",").map((name) => name.trim()).concat(applicationExperts.split(",").map((name) => name.trim())).unshift(coordinator),
+            user_names: users.split(",").map((name) => name.trim()).concat(applicationExperts.split(",").map((name) => name.trim())),
             hours: parseInt(hours),
             priority: parseInt(level),
             header_url: link,
