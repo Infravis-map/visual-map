@@ -73,26 +73,28 @@ export default function Map({ projects, setProjects }) {
 
   useEffect(() => {
     GetNumInstitues();
-    console.log(projects);
+    //console.log(projects);
   }, [projects]);
 
   function generateEdges(projects) {
     const edgeSet = new Set();
 
-    console.log(projects);
+    //console.log(projects);
 
-    projects.forEach((project) => {
-      const { user_institutes } = project;
-      for (let i = 0; i < user_institutes.length; i++) {
-        for (let j = i + 1; j < user_institutes.length; j++) {
-          const source = user_institutes[i]-1;
-          const target = user_institutes[j]-1;
-          const edge =
-            source < target ? `${source}-${target}` : `${target}-${source}`;
-          edgeSet.add(edge);
+    if (Array.isArray(projects)) {
+      projects.forEach((project) => {
+        const { user_institutes } = project;
+        for (let i = 0; i < user_institutes.length; i++) {
+          for (let j = i + 1; j < user_institutes.length; j++) {
+            const source = user_institutes[i]-1;
+            const target = user_institutes[j]-1;
+            const edge =
+              source < target ? `${source}-${target}` : `${target}-${source}`;
+            edgeSet.add(edge);
+          }
         }
-      }
-    });
+      });
+    }
 
     const edges = Array.from(edgeSet).map((edge) => {
       const [source, target] = edge.split("-").map(Number);
