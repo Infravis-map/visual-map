@@ -90,7 +90,7 @@ export default function InputPage() {
             end_date: enddate,
             coordinator,
             // application_experts: ,
-            user_names: users.split(",").map((name) => name.trim()).concat(applicationExperts.split(",").map((name) => name.trim())),
+            user_names: users.split(",").map((name) => name.trim()).concat(applicationExperts.split(",").map((name) => name.trim())).unshift(coordinator),
             hours: parseInt(hours),
             priority: parseInt(level),
             header_url: link,
